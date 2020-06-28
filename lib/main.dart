@@ -93,7 +93,7 @@ class MyProfileWidget extends StatelessWidget {
     var screenWeight = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.black12,
-      height: screenHeight / 4,
+      height: screenHeight / 3,
       width: screenWeight / 2,
       padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
       child: Column(
@@ -102,15 +102,31 @@ class MyProfileWidget extends StatelessWidget {
             child: InkWell(
               splashColor: Colors.green.withAlpha(100),
               onTap: () {},
-              child: Container(
-                  width: screenWeight / 2,
-                  height: screenHeight / 5,
-                  color: Colors.black12,
-                  //alignment: Align.center,
-                  child: IconButton(
-                      icon: Icon(Icons.account_circle),
-                      iconSize: 60,
-                      onPressed: null)),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                      width: screenWeight / 2,
+                      height: screenHeight / 5,
+                      color: Colors.black12,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.account_circle,
+                          ),
+                          iconSize: 60,
+                          onPressed: null)),
+                  Container(
+                    child: Text(
+                      "Profile",
+                      style: TextStyle(
+                          fontFamily: 'Aleo',
+                          fontStyle: FontStyle.normal,
+                          //fontWeight: FontWeight.bold,
+                          fontSize: 25.0,
+                          color: Colors.blueGrey),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -128,7 +144,7 @@ class MyContactWidget extends StatelessWidget {
     var screenWeight = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.black12,
-      height: screenHeight / 4,
+      height: screenHeight / 3,
       width: screenWeight / 2,
       padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
       child: Column(
@@ -137,14 +153,31 @@ class MyContactWidget extends StatelessWidget {
             child: InkWell(
               splashColor: Colors.green.withAlpha(100),
               onTap: () {},
-              child: Container(
-                  width: screenWeight / 2,
-                  height: screenHeight / 5,
-                  color: Colors.black12,
-                  child: IconButton(
-                      icon: Icon(Icons.contact_phone),
-                      iconSize: 60,
-                      onPressed: null)),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                      width: screenWeight / 2,
+                      height: screenHeight / 5,
+                      color: Colors.black12,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.contact_mail,
+                          ),
+                          iconSize: 60,
+                          onPressed: null)),
+                  Container(
+                    child: Text(
+                      "Contacts",
+                      style: TextStyle(
+                          fontFamily: 'Aleo',
+                          fontStyle: FontStyle.normal,
+                          //fontWeight: FontWeight.bold,
+                          fontSize: 25.0,
+                          color: Colors.blueGrey),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -162,7 +195,7 @@ class MyAcademicWidget extends StatelessWidget {
     var screenWeight = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.black12,
-      height: screenHeight / 4,
+      height: screenHeight / 3,
       width: screenWeight / 2,
       padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
       child: Column(
@@ -171,12 +204,31 @@ class MyAcademicWidget extends StatelessWidget {
             child: InkWell(
               splashColor: Colors.green.withAlpha(100),
               onTap: () {},
-              child: Container(
-                  width: screenWeight / 2,
-                  height: screenHeight / 5,
-                  color: Colors.black12,
-                  child: IconButton(
-                      icon: Icon(Icons.school), iconSize: 60, onPressed: null)),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                      width: screenWeight / 2,
+                      height: screenHeight / 5,
+                      color: Colors.black12,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.school,
+                          ),
+                          iconSize: 60,
+                          onPressed: null)),
+                  Container(
+                    child: Text(
+                      "Academic",
+                      style: TextStyle(
+                          fontFamily: 'Aleo',
+                          fontStyle: FontStyle.normal,
+                          //fontWeight: FontWeight.bold,
+                          fontSize: 25.0,
+                          color: Colors.blueGrey),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -194,7 +246,7 @@ class MyWorkWidget extends StatelessWidget {
     var screenWeight = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.black12,
-      height: screenHeight / 4,
+      height: screenHeight / 3,
       width: screenWeight / 2,
       padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
       child: Column(
@@ -203,12 +255,31 @@ class MyWorkWidget extends StatelessWidget {
             child: InkWell(
               splashColor: Colors.green.withAlpha(100),
               onTap: () {},
-              child: Container(
-                  width: screenWeight / 2,
-                  height: screenHeight / 5,
-                  color: Colors.black12,
-                  child: IconButton(
-                      icon: Icon(Icons.work), iconSize: 60, onPressed: null)),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                      width: screenWeight / 2,
+                      height: screenHeight / 5,
+                      color: Colors.black12,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.work,
+                          ),
+                          iconSize: 60,
+                          onPressed: null)),
+                  Container(
+                    child: Text(
+                      "Employment",
+                      style: TextStyle(
+                          fontFamily: 'Aleo',
+                          fontStyle: FontStyle.normal,
+                          //fontWeight: FontWeight.bold,
+                          fontSize: 25.0,
+                          color: Colors.blueGrey),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -226,7 +297,7 @@ class MyURLWidget extends StatelessWidget {
     var screenWeight = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.black12,
-      height: screenHeight / 4,
+      height: screenHeight / 3,
       width: screenWeight / 2,
       padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
       child: Column(
@@ -235,14 +306,31 @@ class MyURLWidget extends StatelessWidget {
             child: InkWell(
               splashColor: Colors.green.withAlpha(100),
               onTap: () {},
-              child: Container(
-                  width: screenWeight / 2,
-                  height: screenHeight / 5,
-                  color: Colors.black12,
-                  child: IconButton(
-                      icon: Icon(Icons.speaker_group),
-                      iconSize: 60,
-                      onPressed: null)),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                      width: screenWeight / 2,
+                      height: screenHeight / 5,
+                      color: Colors.black12,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.speaker_group,
+                          ),
+                          iconSize: 60,
+                          onPressed: null)),
+                  Container(
+                    child: Text(
+                      "Social Link",
+                      style: TextStyle(
+                          fontFamily: 'Aleo',
+                          fontStyle: FontStyle.normal,
+                          //fontWeight: FontWeight.bold,
+                          fontSize: 25.0,
+                          color: Colors.blueGrey),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -260,7 +348,7 @@ class MylinksWidget extends StatelessWidget {
     var screenWeight = MediaQuery.of(context).size.width;
     return Container(
       color: Colors.black12,
-      height: screenHeight / 4,
+      height: screenHeight / 3,
       width: screenWeight / 2,
       padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
       child: Column(
@@ -269,12 +357,31 @@ class MylinksWidget extends StatelessWidget {
             child: InkWell(
               splashColor: Colors.green.withAlpha(100),
               onTap: () {},
-              child: Container(
-                  width: screenWeight / 2,
-                  height: screenHeight / 5,
-                  color: Colors.black12,
-                  child: IconButton(
-                      icon: Icon(Icons.link), iconSize: 60, onPressed: null)),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                      width: screenWeight / 2,
+                      height: screenHeight / 5,
+                      color: Colors.black12,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.link,
+                          ),
+                          iconSize: 60,
+                          onPressed: null)),
+                  Container(
+                    child: Text(
+                      "Links",
+                      style: TextStyle(
+                          fontFamily: 'Aleo',
+                          fontStyle: FontStyle.normal,
+                          //fontWeight: FontWeight.bold,
+                          fontSize: 25.0,
+                          color: Colors.blueGrey),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ],
@@ -359,7 +466,9 @@ class MySettingsWidget extends StatelessWidget {
                       height: screenHeight / 5,
                       color: Colors.black12,
                       child: IconButton(
-                          icon: Icon(Icons.settings),
+                          icon: Icon(
+                            Icons.settings,
+                          ),
                           iconSize: 60,
                           onPressed: null)),
                   Container(
