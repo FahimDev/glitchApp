@@ -24,7 +24,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   var data;
   Future getData() async {
-    var responser = await http.post("https://reqbin.com/echo/post/json");
+    var responser =
+        await http.get("http://office-rest.api.glitch-innovations.com/title");
     setState(() {
       var decode = json.decode(responser.body);
       data = decode;
