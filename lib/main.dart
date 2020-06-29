@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart'; //For preventing Rotation
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MyApp());
@@ -13,7 +16,28 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  var data;
+  Future getData() async {
+    var responser = await http.post("https://reqbin.com/echo/post/json");
+    setState(() {
+      var decode = json.decode(responser.body);
+      data = decode;
+      print(data);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    this.getData();
+  }
+
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
