@@ -18,6 +18,7 @@ class loginPage extends StatelessWidget {
     var screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       backgroundColor: Colors.blueGrey,
+      resizeToAvoidBottomPadding: false,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -36,7 +37,7 @@ class loginPage extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Container(
-                  height: screenHeight / 5,
+                  height: screenHeight / 9,
                 ),
                 Stack(
                   alignment: Alignment.center,
@@ -71,17 +72,88 @@ class loginPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                Container(
-                  alignment: Alignment.centerLeft,
-                  child: TextField(
-                    style:
-                        TextStyle(color: Colors.white, fontFamily: 'OpenSans'),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.only(top: 14.0),
-                      prefixIcon: Icon(
-                        Icons.account_circle,
-                        color: Colors.white,
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white10,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(50),
+                        topRight: Radius.circular(50),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: Colors.white24,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(30),
+                                topRight: Radius.circular(30),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 20,
+                                  offset: Offset(0, 10),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                TextField(
+                                  decoration:
+                                      InputDecoration(hintText: "User Name"),
+                                )
+                              ],
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              color: Colors.white24,
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(10),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 20,
+                                  offset: Offset(0, 10),
+                                ),
+                              ],
+                            ),
+                            child: Column(
+                              children: <Widget>[
+                                TextField(
+                                  decoration:
+                                      InputDecoration(hintText: "Password"),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            height: 50,
+                            margin: EdgeInsets.symmetric(horizontal: 50),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                color: Colors.lightBlueAccent),
+                            child: Center(
+                              child: Text(
+                                "Login",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
