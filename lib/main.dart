@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart'; //For preventing Rotation
+import 'package:glitchApp/menu.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
@@ -23,20 +24,59 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   var data;
+  var response;
+  var token;
+  TextEditingController userName = new TextEditingController();
+  TextEditingController password = new TextEditingController();
+
+  var buttonColor = Color(0xFF61A4F1);
+  var buttonColor1 = Color(0xFF478DE0);
+
   Future getData() async {
-    var responser =
-        await http.get("http://office-rest.api.glitch-innovations.com/title");
+    var responser = await http.post(
+        "http://www.office-rest.api.glitch-innovations.com/authority?userName=" +
+            userName.text +
+            "&password=" +
+            password.text +
+            "");
     setState(() {
-      var decode = json.decode(responser.body);
-      data = decode;
-      print(data);
+      buttonColor = Colors.green;
+      buttonColor1 = Colors.lightGreenAccent;
+      if (responser.body == 'Shoitan!') {
+        print('Sorry! Wrong User-name or Password');
+        buttonColor = Colors.red;
+        buttonColor1 = Colors.redAccent;
+      } else {
+        buttonColor = Colors.green;
+        buttonColor1 = Colors.lightGreenAccent;
+        var decode = json.decode(responser.body);
+        data = decode;
+        response = data['response'];
+        token = data['Token'];
+
+        if (response == 'As-salamu Alaykum') {
+          print('Login Success!');
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MyMenu(
+                        accessToken: token,
+                        userName: userName.text,
+                      )));
+          buttonColor = Color(0xFF61A4F1);
+          buttonColor1 = Color(0xFF478DE0);
+        } else {
+          print('Something went wrong!');
+        }
+      }
     });
   }
 
   @override
   void initState() {
     super.initState();
-    this.getData();
+
+    //this.getData();
   }
 
   @override
@@ -131,6 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           children: <Widget>[
                             TextField(
+                              controller: userName,
                               decoration:
                                   InputDecoration(hintText: "User Name"),
                             )
@@ -156,6 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           children: <Widget>[
                             TextField(
+                              controller: password,
                               decoration: InputDecoration(hintText: "Password"),
                             )
                           ],
@@ -167,7 +209,7 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                         child: GestureDetector(
                           onTap: () {
-                            BoxDecoration(color: Colors.black12);
+                            this.getData();
                           },
                           child: Container(
                             height: 50,
@@ -179,8 +221,8 @@ class _LoginPageState extends State<LoginPage> {
                                   end: Alignment.bottomCenter,
                                   colors: [
                                     Color(0xFF73AEF5),
-                                    Color(0xFF61A4F1),
-                                    Color(0xFF478DE0),
+                                    buttonColor,
+                                    buttonColor,
                                     Color(0xFF398AE5),
                                   ]),
                               boxShadow: [
