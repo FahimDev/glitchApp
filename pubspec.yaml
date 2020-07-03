@@ -49,6 +49,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - customAsset/images/background1.jpg
+    - customAsset/images/background3.jpg
     - customAsset/images/background.png
   #   - images/a_dot_ham.jpeg
 

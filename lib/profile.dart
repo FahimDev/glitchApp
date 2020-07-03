@@ -42,20 +42,21 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
-  editForm() {
-    var currentInfo = "Current Info";
+  editForm(String type, String current) {
+    type;
+    var currentInfo = current;
     var newInfo;
     showDialog(
       context: context,
       child: new AlertDialog(
-        title: new Text("Are you sure you want to change this information?"),
+        title: new Text("Are you sure you want to your " + type + " ?"),
         content: new Stack(
           children: <Widget>[
             Container(
-              child: Text("Current data:" + currentInfo),
+              child: Text("Current data: " + currentInfo),
             ),
             Container(
-              padding: const EdgeInsets.only(top: 30.0),
+              padding: const EdgeInsets.only(top: 50.0),
               child: TextField(
                 controller: newInfo,
                 decoration: InputDecoration(hintText: "Updated Information"),
@@ -264,7 +265,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                     trailing:
                                         CircleAvatar(child: Icon(Icons.edit)),
                                     onTap: () {
-                                      editForm();
+                                      var type = "fullName";
+                                      var current = "Ariful Islam";
+                                      editForm(type, current);
                                     },
                                   ),
                                 ),
@@ -275,6 +278,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                     leading: Icon(Icons.arrow_right),
                                     trailing:
                                         CircleAvatar(child: Icon(Icons.edit)),
+                                    onTap: () {
+                                      var type = "title";
+                                      var current = "Software Engineer";
+                                      editForm(type, current);
+                                    },
                                   ),
                                 ),
                                 Container(
@@ -285,6 +293,12 @@ class _ProfilePageState extends State<ProfilePage> {
                                     leading: Icon(Icons.arrow_right),
                                     trailing:
                                         CircleAvatar(child: Icon(Icons.edit)),
+                                    onTap: () {
+                                      var type = "currentLoc";
+                                      var current =
+                                          "Banasree R/A, Rampura ,Dhaka 1219,Bangladesh";
+                                      editForm(type, current);
+                                    },
                                   ),
                                 ),
                                 Container(
@@ -294,6 +308,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                     leading: Icon(Icons.arrow_right),
                                     trailing:
                                         CircleAvatar(child: Icon(Icons.edit)),
+                                    onTap: () {
+                                      var type = "parmanentLoc";
+                                      var current = "Chittagong,Bangladesh";
+                                      editForm(type, current);
+                                    },
                                   ),
                                 ),
                                 Container(
@@ -313,6 +332,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                     leading: Icon(Icons.arrow_right),
                                     trailing:
                                         CircleAvatar(child: Icon(Icons.edit)),
+                                    onTap: () {
+                                      var type = "relationship";
+                                      var current = "Single";
+                                      editForm(type, current);
+                                    },
                                   ),
                                 ),
                                 Container(
@@ -322,6 +346,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                     leading: Icon(Icons.arrow_right),
                                     trailing:
                                         CircleAvatar(child: Icon(Icons.edit)),
+                                    onTap: () {
+                                      var type = "religion";
+                                      var current = "Islam";
+                                      editForm(type, current);
+                                    },
                                   ),
                                 ),
                                 Container(
@@ -331,6 +360,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                     leading: Icon(Icons.arrow_right),
                                     trailing:
                                         CircleAvatar(child: Icon(Icons.edit)),
+                                    onTap: () {
+                                      var type = "fatherName";
+                                      var current = "Engr.Md Nur Hossain";
+                                      editForm(type, current);
+                                    },
                                   ),
                                 ),
                                 Container(
@@ -341,6 +375,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                     trailing: CircleAvatar(
                                       child: Icon(Icons.edit),
                                     ),
+                                    onTap: () {
+                                      var type = "motherName";
+                                      var current = "Ferdouse Yeasmin";
+                                      editForm(type, current);
+                                    },
                                   ),
                                 ),
                               ],
