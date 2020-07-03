@@ -40,6 +40,7 @@ class MyMenu extends StatelessWidget {
             ),
             SingleChildScrollView(
               scrollDirection: Axis.vertical,
+
               //padding: const EdgeInsets.only(left: 20.0, right: 20.0),
               child: Column(
                 children: <Widget>[

@@ -42,6 +42,45 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  editForm() {
+    var currentInfo = "Current Info";
+    var newInfo;
+    showDialog(
+      context: context,
+      child: new AlertDialog(
+        title: new Text("Are you sure you want to change this information?"),
+        content: new Stack(
+          children: <Widget>[
+            Container(
+              child: Text("Current data:" + currentInfo),
+            ),
+            Container(
+              padding: const EdgeInsets.only(top: 30.0),
+              child: TextField(
+                controller: newInfo,
+                decoration: InputDecoration(hintText: "Updated Information"),
+              ),
+            )
+          ],
+        ),
+        actions: <Widget>[
+          RaisedButton(
+            onPressed: () {},
+            child: Text("Update"),
+            color: Colors.green,
+          ),
+          RaisedButton(
+            onPressed: () {
+              (context as Element).reassemble();
+            },
+            child: Text("No"),
+            color: Colors.red,
+          ),
+        ],
+      ),
+    );
+  }
+
   /*File _image;
   Future cameraImg() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -50,13 +89,21 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   } */
   var data;
-  var img;
+  String name;
   Future getProfile() async {
     var responser = await http.get(
         "http://www.office-rest.api.glitch-innovations.com/member-profile/fahim0373");
     var decode = json.decode(responser.body);
     data = decode;
-    img = data['imgPath'];
+    name = data['fullName'].toString();
+    print(name);
+  }
+
+  @override
+  void initState() {
+    this.getProfile();
+
+    super.initState();
   }
 
   @override
@@ -77,6 +124,34 @@ class _ProfilePageState extends State<ProfilePage> {
                     SizedBox(
                       height: 30,
                       //width: 20,
+                    ),
+                    Container(
+                      child: _image == null
+                          ? Icon(
+                              Icons.check_circle,
+                              color: Colors.deepPurple,
+                            )
+                          : AlertDialog(
+                              title: Text(
+                                  "Do you want to update this image as your Profile picture?"),
+                              content: Image.file(
+                                _image,
+                                height: 100,
+                              ),
+                              actions: <Widget>[
+                                RaisedButton(
+                                  onPressed: () {},
+                                  child: Text("Update"),
+                                ),
+                                RaisedButton(
+                                  onPressed: () {
+                                    _image = null;
+                                    (context as Element).reassemble();
+                                  },
+                                  child: Text("No"),
+                                ),
+                              ],
+                            ),
                     ),
                     Container(
                       child: ClipRRect(
@@ -188,31 +263,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                     leading: Icon(Icons.arrow_right),
                                     trailing:
                                         CircleAvatar(child: Icon(Icons.edit)),
+                                    onTap: () {
+                                      editForm();
+                                    },
                                   ),
                                 ),
                                 Container(
                                   child: ListTile(
                                     title: Text("Profile Title:"),
                                     subtitle: Text("Software Engineer"),
-                                    leading: Icon(Icons.arrow_right),
-                                    trailing:
-                                        CircleAvatar(child: Icon(Icons.edit)),
-                                  ),
-                                ),
-                                Container(
-                                  child: ListTile(
-                                    title: Text("Contact Number:"),
-                                    subtitle: Text("+8801712844177"),
-                                    leading: Icon(Icons.arrow_right),
-                                    trailing:
-                                        CircleAvatar(child: Icon(Icons.edit)),
-                                  ),
-                                ),
-                                Container(
-                                  child: ListTile(
-                                    title: Text("E-Mail:"),
-                                    subtitle:
-                                        Text("fahim.arif0373@outlook.com"),
                                     leading: Icon(Icons.arrow_right),
                                     trailing:
                                         CircleAvatar(child: Icon(Icons.edit)),
