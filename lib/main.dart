@@ -25,7 +25,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   var data;
   var response;
-  var token;
+  static var token;
+  static var user;
   TextEditingController userName = new TextEditingController();
   TextEditingController password = new TextEditingController();
 
@@ -56,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
 
         if (response == 'As-salamu Alaykum') {
           print('Login Success!');
+          //user = userName.text;
           Navigator.push(
               context,
               MaterialPageRoute(
