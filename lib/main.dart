@@ -18,6 +18,8 @@ class MyApp extends StatelessWidget {
 }
 
 class LoginPage extends StatefulWidget {
+  static String user;
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -33,17 +35,23 @@ class _LoginPageState extends State<LoginPage> {
   var buttonColor = Color(0xFF61A4F1);
   var buttonColor1 = Color(0xFF478DE0);
 
+  Map<String, String> get headers => {
+        "User-Name": userName.text,
+        "Password": password.text,
+      };
+
   Future getData() async {
     var responser = await http.post(
         "http://www.office-rest.api.glitch-innovations.com/authority?userName=" +
             userName.text +
             "&password=" +
             password.text +
-            "");
+            "",
+        headers: headers);
     setState(() {
       buttonColor = Colors.green;
       buttonColor1 = Colors.lightGreenAccent;
-      if (responser.body == 'Shoitan!') {
+      if (responser.body == 'Shoitan!' || responser.body == "Unauthorized.") {
         print('Sorry! Wrong User-name or Password');
         buttonColor = Colors.red;
         buttonColor1 = Colors.redAccent;
