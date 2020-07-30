@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
         response = data['response'];
         token = data['Token'];
 
-        if (response == 'As-salamu Alaykum') {
+        if (response == 'As-Salamu Alaykum') {
           print('Login Success!');
           //user = userName.text;
           Navigator.push(

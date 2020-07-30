@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:glitchApp/academic.dart';
 import 'package:glitchApp/main.dart';
 import 'package:glitchApp/profile.dart';
 
@@ -93,13 +94,15 @@ class MyMenu extends StatelessWidget {
                                           color: Colors.white70,
                                           onPressed: () {
                                             Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        ProfilePage(
-                                                          token: accessToken,
-                                                          userName: userName,
-                                                        )));
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ProfilePage(
+                                                  token: accessToken,
+                                                  userName: userName,
+                                                ),
+                                              ),
+                                            );
                                           }),
                                     ),
                                     Container(
@@ -219,12 +222,22 @@ class MyMenu extends StatelessWidget {
                                       height: screenHeight / 5,
                                       //color: Colors.black12,
                                       child: IconButton(
-                                          icon: Icon(
-                                            Icons.school,
-                                            color: Colors.white70,
-                                          ),
-                                          iconSize: 60,
-                                          onPressed: null),
+                                        icon: Icon(
+                                          Icons.school,
+                                          color: Colors.white70,
+                                        ),
+                                        iconSize: 60,
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AcademicPage(
+                                                        token: accessToken,
+                                                        userName: userName,
+                                                      )));
+                                        },
+                                      ),
                                     ),
                                     Container(
                                       child: Text(
