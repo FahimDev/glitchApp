@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:flutter_uploader/flutter_uploader.dart';
 import 'package:flutter/widgets.dart';
 import 'package:glitchApp/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:async/async.dart';
 
 class Profile extends StatelessWidget {
   @override
@@ -26,53 +28,98 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  TextEditingController newData = new TextEditingController();
+  var picture;
   File _image;
   final picker = ImagePicker();
   Future cameraImg() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
+    /*
+    File imageCropper = await ImageCropper.cropImage(
+        sourcePath: pickedFile.path,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+        compressQuality: 100,
+        maxWidth: 700,
+        maxHeight: 700,
+        compressFormat: ImageCompressFormat.jpg,
+        androidUiSettings: AndroidUiSettings(
+            toolbarColor: Colors.blueAccent,
+            toolbarTitle: "Crop & Upload",
+            backgroundColor: Colors.lightBlue,
+            statusBarColor: Colors.lightBlueAccent));
+            */
     setState(() {
-      _image = File(pickedFile.path);
+      //_image = File(pickedFile.path); //imageCropper;
+      picture = pickedFile;
+      _crop();
     });
+  }
+
+  _crop() async {
+    File cropped = await ImageCropper.cropImage(
+        sourcePath: picture.path,
+        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1));
+    if (cropped != null) {
+      setState(() {
+        _image = cropped;
+        picture = cropped;
+      });
+    }
   }
 
   Future gallaryImg() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
     setState(() {
-      _image = File(pickedFile.path);
+      //_image = File(pickedFile.path);
+      picture = pickedFile;
+      _crop();
     });
   }
 
   editForm(String type, String current) {
     type;
     var currentInfo = current;
+    newData.text = currentInfo;
     var newInfo;
     showDialog(
       context: context,
       child: new AlertDialog(
-        title: new Text("Are you sure you want to your " + type + " ?"),
+        title: new Text("Are you sure you want edit to your " + type + " ?"),
         content: new Stack(
           children: <Widget>[
             Container(
-              child: Text("Current data: " + currentInfo),
-            ),
-            Container(
-              padding: const EdgeInsets.only(top: 50.0),
               child: TextField(
-                controller: newInfo,
-                decoration: InputDecoration(hintText: "Updated Information"),
+                keyboardType: TextInputType.multiline,
+                minLines: 1,
+                maxLines: 5,
+                controller: newData,
+                decoration: InputDecoration(
+                    counterText: "Current Information:" + currentInfo),
               ),
             )
           ],
         ),
         actions: <Widget>[
           RaisedButton(
-            onPressed: () {},
+            onPressed: () {
+              //newInfo = newData.text;
+              newData.text = "";
+            },
+            child: Text("Make it Null"),
+            color: Colors.yellowAccent,
+          ),
+          RaisedButton(
+            onPressed: () {
+              //newInfo = newData.text;
+              this.makeChange(type);
+            },
             child: Text("Update"),
             color: Colors.green,
           ),
           RaisedButton(
             onPressed: () {
-              (context as Element).reassemble();
+              Navigator.of(context, rootNavigator: true).pop('dialog');
+              //(context as Element).reassemble();
             },
             child: Text("No"),
             color: Colors.red,
@@ -82,6 +129,9 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  var userName = LoginPage.user;
+  var token = LoginPage.token;
+  var passwd = LoginPage.passwd;
   /*File _image;
   Future cameraImg() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -107,7 +157,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<String> getProfile() async {
     var responser = await http.get(
-        "http://www.office-rest.api.glitch-innovations.com/member-profile/fahim0373");
+        "http://www.office-rest.api.glitch-innovations.com/member-profile/" +
+            userName +
+            "");
     myElement = json.decode(responser.body.toString());
     data = myElement[0];
 
@@ -127,6 +179,121 @@ class _ProfilePageState extends State<ProfilePage> {
       print(data);
       print(data["fullName"]);
     }
+  }
+
+  Map<String, String> get headers => {
+        "Access-Token": token,
+        "User-Name": userName,
+        "Password": passwd,
+      };
+
+  Future<String> makeChange(String type) async {
+    var changeInfo = await http.put(
+        "http://www.office-rest.api.glitch-innovations.com/update-profile?userName=" +
+            userName +
+            "&type=" +
+            type +
+            "&data=" +
+            newData.text +
+            "",
+        headers: headers);
+    Navigator.of(context, rootNavigator: true).pop('dialog');
+    (context as Element).reassemble();
+    print(changeInfo.body);
+  }
+
+  _asyncFileUpload() async {
+    //create multipart request for POST or PATCH method
+    var request = http.MultipartRequest(
+        "POST",
+        Uri.parse(
+            "http://www.office-rest.api.glitch-innovations.com/update-profile-img"));
+    //add text fields
+    request.fields["userName"] = userName;
+    //create multipart using filepath, string or bytes
+    var pic = await http.MultipartFile.fromPath("uploadImg", picture.path);
+    //add multipart to request
+    request.files.add(pic);
+    request.headers.addAll(headers);
+    var response = await request.send();
+
+    //Get the response from the server
+    var responseData = await response.stream.toBytes();
+    var responseString = String.fromCharCodes(responseData);
+    Navigator.of(context, rootNavigator: true).pop('dialog');
+    if (responseString == "success") {
+      _image = null;
+      (context as Element).reassemble();
+    } else if (responseString == "Image file not found !") {
+      _image = null;
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Something went Wrong"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text(
+                    "Please,try with another Image.We recommend lite size images.If you are using Device camera the front camera is a good option."),
+              )
+            ],
+          ),
+        ),
+      );
+
+      print("Try Another Image");
+    } else if (responseString == "Invalid Token !") {
+      _image = null;
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Something went Wrong"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Your session is over.Please,login again."),
+              )
+            ],
+          ),
+        ),
+      );
+    } else {
+      _image = null;
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Something went Wrong!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Please,try again."),
+              )
+            ],
+          ),
+        ),
+      );
+    }
+
+    print(responseString);
+  }
+
+  imageUploadNoti() {
+    showDialog(
+      context: context,
+      child: new AlertDialog(
+        title: new Text("Uploading..."),
+        content: new Stack(
+          children: <Widget>[
+            Container(
+              child: Text("Please,wait.This will take few seconds."),
+            )
+          ],
+        ),
+      ),
+    );
   }
 
 /*
@@ -176,8 +343,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                   actions: <Widget>[
                                     RaisedButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        _crop();
+                                      },
+                                      child: Text("Crop"),
+                                      color: Colors.yellow,
+                                    ),
+                                    RaisedButton(
+                                      onPressed: () {
+                                        imageUploadNoti();
+                                        _asyncFileUpload();
+                                      },
                                       child: Text("Update"),
+                                      color: Colors.green,
                                     ),
                                     RaisedButton(
                                       onPressed: () {
@@ -185,6 +363,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         (context as Element).reassemble();
                                       },
                                       child: Text("No"),
+                                      color: Colors.red,
                                     ),
                                   ],
                                 ),
@@ -351,6 +530,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                         leading: Icon(Icons.arrow_right),
                                         trailing: CircleAvatar(
                                             child: Icon(Icons.edit)),
+                                        onTap: () {
+                                          var type = "about";
+                                          var current = about;
+                                          editForm(type, current);
+                                        },
                                       ),
                                     ),
                                     Container(
@@ -425,12 +609,7 @@ class _ProfilePageState extends State<ProfilePage> {
           } else if (snapshot.connectionState == ConnectionState.waiting) {
             return SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              child: Center(
-                child: SvgPicture.asset(
-                  'customAsset/images/loadingDisk.svg',
-                  height: 300,
-                ),
-              ),
+              child: Center(child: Text("Loading...")),
             );
           }
         },

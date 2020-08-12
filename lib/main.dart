@@ -18,8 +18,9 @@ class MyApp extends StatelessWidget {
 }
 
 class LoginPage extends StatefulWidget {
-  static String user;
-
+  static String user = _LoginPageState.user;
+  static String token = _LoginPageState.token;
+  static String passwd = _LoginPageState.passwd;
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -29,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   var response;
   static var token;
   static var user;
+  static var passwd;
   TextEditingController userName = new TextEditingController();
   TextEditingController password = new TextEditingController();
 
@@ -64,6 +66,8 @@ class _LoginPageState extends State<LoginPage> {
         token = data['Token'];
 
         if (response == 'As-Salamu Alaykum') {
+          user = userName.text;
+          passwd = password.text;
           print('Login Success!');
           //user = userName.text;
           Navigator.push(
