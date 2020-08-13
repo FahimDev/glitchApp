@@ -21,6 +21,7 @@ class LoginPage extends StatefulWidget {
   static String user = _LoginPageState.user;
   static String token = _LoginPageState.token;
   static String passwd = _LoginPageState.passwd;
+  static String baseURL = "http://www.office-rest.api.glitch-innovations.com/";
   @override
   _LoginPageState createState() => _LoginPageState();
 }

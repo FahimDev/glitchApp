@@ -29,10 +29,10 @@ class _AcademicPageState extends State<AcademicPage> {
   var data;
   Future<String> getProfile() async {
     var responser = await http.get(
-        "http://www.office-rest.api.glitch-innovations.com/member-profile/fahim0373");
+        "http://www.office-rest.api.glitch-innovations.com/member-hobby/fahim0373");
     myElement = json.decode(responser.body.toString());
     data = myElement[0];
-    print(data["fullName"]);
+    print(data["hobby"]);
 
     return "Success";
     //_listView();
@@ -67,9 +67,8 @@ class _AcademicPageState extends State<AcademicPage> {
                     return Card(
                       child: Row(
                         children: <Widget>[
-                          Text(myElement[index]
-                              ["fullName"]) //${myElement[index]["fullName"]}
-                        ], //${myElement[index]["userName"]}
+                          Text(myElement[index]["hobby"]),
+                        ],
                       ),
                     );
                   });

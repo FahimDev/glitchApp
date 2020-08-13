@@ -5,6 +5,7 @@ import 'package:glitchApp/main.dart';
 import 'package:glitchApp/profile.dart';
 
 import 'changePassword.dart';
+import 'contact.dart';
 
 class MyMenu extends StatelessWidget {
   var accessToken;
@@ -139,29 +140,42 @@ class MyMenu extends StatelessWidget {
                                 child: Column(
                                   children: <Widget>[
                                     Container(
-                                        decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(80),
-                                            topRight: Radius.circular(80),
-                                          ),
-                                          gradient: LinearGradient(
-                                            colors: <Color>[
-                                              Color(0xFF42A5F5),
-                                              Color(0xFF1976D2),
-                                              Color(0xFF0D47A1),
-                                            ],
-                                          ),
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(80),
+                                          topRight: Radius.circular(80),
                                         ),
-                                        width: screenWeight / 2,
-                                        height: screenHeight / 5,
-                                        //color: Colors.black12,
-                                        child: IconButton(
-                                            icon: Icon(
-                                              Icons.contact_mail,
-                                              color: Colors.white70,
+                                        gradient: LinearGradient(
+                                          colors: <Color>[
+                                            Color(0xFF42A5F5),
+                                            Color(0xFF1976D2),
+                                            Color(0xFF0D47A1),
+                                          ],
+                                        ),
+                                      ),
+                                      width: screenWeight / 2,
+                                      height: screenHeight / 5,
+                                      //color: Colors.black12,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.contact_mail,
+                                          color: Colors.white70,
+                                        ),
+                                        iconSize: 60,
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ContactsPage(
+                                                token: accessToken,
+                                                userName: userName,
+                                              ),
                                             ),
-                                            iconSize: 60,
-                                            onPressed: null)),
+                                          );
+                                        },
+                                      ),
+                                    ),
                                     Container(
                                       child: Text(
                                         "Contacts",
@@ -422,6 +436,130 @@ class MyMenu extends StatelessWidget {
                                     Container(
                                       child: Text(
                                         "Hobbies",
+                                        style: TextStyle(
+                                            fontFamily: 'Aleo',
+                                            fontStyle: FontStyle.normal,
+                                            //fontWeight: FontWeight.bold,
+                                            fontSize: 25.0,
+                                            color: Colors.white70),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                    width: 10,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        //color: Colors.black12,
+
+                        height: screenHeight / 3,
+                        width: screenWeight / 2,
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10.0, right: 10.0),
+                        child: Column(
+                          children: <Widget>[
+                            Card(
+                              color: Color(0xFF0D47A1),
+                              child: InkWell(
+                                splashColor: Colors.green.withAlpha(100),
+                                onTap: () {},
+                                child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(80),
+                                          topRight: Radius.circular(80),
+                                        ),
+                                        gradient: LinearGradient(
+                                          colors: <Color>[
+                                            Color(0xFF0D47A1),
+                                            Color(0xFF1976D2),
+                                            Color(0xFF42A5F5),
+                                          ],
+                                        ),
+                                      ),
+                                      width: screenWeight / 2,
+                                      height: screenHeight / 5,
+                                      //color: Colors.black12,
+                                      child: IconButton(
+                                        icon: FaIcon(
+                                            FontAwesomeIcons.streetView,
+                                            color: Colors.white70),
+                                        iconSize: 60,
+                                        onPressed: null,
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        "Pertinence",
+                                        style: TextStyle(
+                                            fontFamily: 'Aleo',
+                                            fontStyle: FontStyle.normal,
+                                            //fontWeight: FontWeight.bold,
+                                            fontSize: 25.0,
+                                            color: Colors.white70),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        //color: Colors.black12,
+                        height: screenHeight / 3,
+                        width: screenWeight / 2,
+                        padding: const EdgeInsets.only(
+                            top: 10.0, left: 10.0, right: 10.0),
+                        child: Column(
+                          children: <Widget>[
+                            Card(
+                              color: Color(0xFF0D47A1),
+                              child: InkWell(
+                                splashColor: Colors.green.withAlpha(100),
+                                onTap: () {},
+                                child: Column(
+                                  children: <Widget>[
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(80),
+                                          topRight: Radius.circular(80),
+                                        ),
+                                        gradient: LinearGradient(
+                                          colors: <Color>[
+                                            Color(0xFF42A5F5),
+                                            Color(0xFF1976D2),
+                                            Color(0xFF0D47A1),
+                                          ],
+                                        ),
+                                      ),
+                                      width: screenWeight / 2,
+                                      height: screenHeight / 5,
+                                      //color: Colors.black12,
+                                      child: IconButton(
+                                        icon: FaIcon(FontAwesomeIcons.award,
+                                            color: Colors.white70),
+                                        iconSize: 60,
+                                        onPressed: null,
+                                      ),
+                                    ),
+                                    Container(
+                                      child: Text(
+                                        "Acquisition",
                                         style: TextStyle(
                                             fontFamily: 'Aleo',
                                             fontStyle: FontStyle.normal,

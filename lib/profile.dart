@@ -57,8 +57,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
   _crop() async {
     File cropped = await ImageCropper.cropImage(
-        sourcePath: picture.path,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1));
+      sourcePath: picture.path,
+      aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
+      androidUiSettings: AndroidUiSettings(
+        toolbarColor: Colors.blueAccent,
+        toolbarTitle: "Scale | Rotate | Crop",
+        backgroundColor: Colors.lightBlue,
+        statusBarColor: Colors.lightBlueAccent,
+      ),
+    );
     if (cropped != null) {
       setState(() {
         _image = cropped;
@@ -84,7 +91,7 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(
       context: context,
       child: new AlertDialog(
-        title: new Text("Are you sure you want edit to your " + type + " ?"),
+        title: new Text("Do you want to change '" + type + "' section ?"),
         content: new Stack(
           children: <Widget>[
             Container(
@@ -132,6 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
   var userName = LoginPage.user;
   var token = LoginPage.token;
   var passwd = LoginPage.passwd;
+  var baseURL = LoginPage.baseURL;
   /*File _image;
   Future cameraImg() async {
     var image = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -143,7 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
   var data;
 
   var _proImg =
-      "https://www.office-rest.api.glitch-innovations.com/public/membersImg/fahim0373.jpg";
+      "https://glitch-innovations.com/static/media/gettingUserImage.12cddfbe.svg";
 
   var name = "Name";
   var title = "Title";
@@ -346,7 +354,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       onPressed: () {
                                         _crop();
                                       },
-                                      child: Text("Crop"),
+                                      child: Text("Edit"),
                                       color: Colors.yellow,
                                     ),
                                     RaisedButton(
