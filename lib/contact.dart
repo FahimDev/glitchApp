@@ -49,7 +49,7 @@ class _ContactsPageState extends State<ContactsPage> {
     showDialog(
       context: context,
       child: new AlertDialog(
-        title: new Text("Do you want to change '" + lable + "' section ?"),
+        title: new Text("Change '" + lable + "' section ?"),
         content: new Stack(
           children: <Widget>[
             Container(
@@ -60,6 +60,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       maxLines: 5,
                       controller: newData,
                       decoration: InputDecoration(
+                          hintText: lable,
                           counterText: "Current Information:" + currentInfo),
                     )
                   : TextField(
@@ -68,6 +69,7 @@ class _ContactsPageState extends State<ContactsPage> {
                       maxLines: 5,
                       controller: newData,
                       decoration: InputDecoration(
+                          hintText: lable,
                           counterText: "Current Information:" + currentInfo),
                     ),
             )
@@ -104,7 +106,8 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   infoNoti() {
-    (context as Element).reassemble();
+    Navigator.of(context, rootNavigator: true).pop('dialog');
+    //(context as Element).reassemble();
     showDialog(
       context: context,
       child: new AlertDialog(
@@ -173,6 +176,15 @@ class _ContactsPageState extends State<ContactsPage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                //(context as Element).reassemble();
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
       );
     }

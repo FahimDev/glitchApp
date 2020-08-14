@@ -64,11 +64,48 @@ class _AcademicPageState extends State<AcademicPage> {
               return new ListView.builder(
                   itemCount: myElement.length == null ? 0 : myElement.length,
                   itemBuilder: (BuildContext context, int index) {
+                    //myElement[index]["hobby"]
                     return Card(
-                      child: Row(
-                        children: <Widget>[
-                          Text(myElement[index]["hobby"]),
-                        ],
+                      elevation: 2,
+                      child: ClipPath(
+                        child: Container(
+                          height: 50,
+                          width: screenWeight,
+                          child: ListTile(
+                            title: Text(
+                              myElement[index]["hobby"],
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            leading: FaIcon(
+                                FontAwesomeIcons.solidHandPointRight,
+                                color: Colors.white70),
+                            trailing: IconButton(
+                              icon: CircleAvatar(
+                                child: Icon(
+                                  Icons.edit,
+                                ),
+                                backgroundColor: Color(0xFF0D47A1),
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Color(0xFF0D47A1),
+                                Color(0xFF1976D2),
+                                Color(0xFF42A5F5),
+                              ],
+                            ),
+                            border: Border(
+                              right: BorderSide(
+                                  color: Color(0xFF0D47A1), width: 5),
+                            ),
+                          ),
+                        ),
+                        clipper: ShapeBorderClipper(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(3))),
                       ),
                     );
                   });

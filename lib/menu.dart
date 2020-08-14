@@ -6,6 +6,7 @@ import 'package:glitchApp/profile.dart';
 
 import 'changePassword.dart';
 import 'contact.dart';
+import 'hobby.dart';
 
 class MyMenu extends StatelessWidget {
   var accessToken;
@@ -243,13 +244,15 @@ class MyMenu extends StatelessWidget {
                                         iconSize: 60,
                                         onPressed: () {
                                           Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      AcademicPage(
-                                                        token: accessToken,
-                                                        userName: userName,
-                                                      )));
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AcademicPage(
+                                                token: accessToken,
+                                                userName: userName,
+                                              ),
+                                            ),
+                                          );
                                         },
                                       ),
                                     ),
@@ -430,7 +433,17 @@ class MyMenu extends StatelessWidget {
                                         icon: FaIcon(FontAwesomeIcons.boxOpen,
                                             color: Colors.white70),
                                         iconSize: 60,
-                                        onPressed: null,
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => HobbyPage(
+                                                token: accessToken,
+                                                userName: userName,
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
                                     Container(

@@ -91,16 +91,17 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(
       context: context,
       child: new AlertDialog(
-        title: new Text("Do you want to change '" + type + "' section ?"),
+        title: new Text("Change '" + type + "' section ?"),
         content: new Stack(
           children: <Widget>[
-            Container(
+            Expanded(
               child: TextField(
                 keyboardType: TextInputType.multiline,
                 minLines: 1,
                 maxLines: 5,
                 controller: newData,
                 decoration: InputDecoration(
+                    hintText: type,
                     counterText: "Current Information:" + currentInfo),
               ),
             )
