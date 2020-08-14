@@ -3,7 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:glitchApp/academic.dart';
 import 'package:glitchApp/main.dart';
 import 'package:glitchApp/profile.dart';
+import 'package:glitchApp/webview.dart';
 
+import 'acquisition.dart';
 import 'changePassword.dart';
 import 'contact.dart';
 import 'hobby.dart';
@@ -567,7 +569,15 @@ class MyMenu extends StatelessWidget {
                                         icon: FaIcon(FontAwesomeIcons.award,
                                             color: Colors.white70),
                                         iconSize: 60,
-                                        onPressed: null,
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  WebViewExample(),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
                                     Container(

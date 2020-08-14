@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:email_validator/email_validator.dart';
+//import 'package:email_validator/email_validator.dart';
 import 'package:glitchApp/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
