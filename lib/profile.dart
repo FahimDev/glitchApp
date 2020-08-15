@@ -101,8 +101,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 maxLines: 5,
                 controller: newData,
                 decoration: InputDecoration(
-                    hintText: type,
-                    counterText: "Current Information:" + currentInfo),
+                  hintText: type,
+                  counterText: "Current Information :" + currentInfo,
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue),
+                  ),
+                  border: OutlineInputBorder(),
+                ),
               ),
             )
           ],
@@ -378,12 +383,24 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                         ),
                         Container(
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(40.0)),
+                            color: Colors.blueAccent,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black54.withOpacity(0.5),
+                                blurRadius: 50.00,
+                                spreadRadius: 0.5,
+                              ),
+                            ],
+                          ),
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(80),
+                            borderRadius: BorderRadius.circular(60),
                             child: Image.network(
                               _proImg,
                               height: screenHeight / 4,
-                              width: screenWeight / 2,
+                              //width: screenWeight / 2,
                             ),
                           ),
                         ),

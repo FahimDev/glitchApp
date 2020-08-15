@@ -163,6 +163,20 @@ class _ContactsPageState extends State<ContactsPage> {
           ),
         ),
       );
+    } else if (changeInfo.body == "Unauthorized.") {
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Something went Wrong"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Authorization ERROR.Please,login again."),
+              )
+            ],
+          ),
+        ),
+      );
     } else {
       (context as Element).reassemble();
       showDialog(
