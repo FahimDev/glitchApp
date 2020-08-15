@@ -9,8 +9,7 @@ class WebViewExample extends StatefulWidget {
 class _WebViewExampleState extends State<WebViewExample> {
   TextEditingController controller = TextEditingController();
   FlutterWebviewPlugin flutterWebviewPlugin = FlutterWebviewPlugin();
-  var urlString =
-      "http://health-bmdc.research.glitch-innovations.com/application/doctor/create";
+  var urlString = "https://glitch-innovations.com/Profile/fahim0373";
 
   launchUrl() {
     setState(() {

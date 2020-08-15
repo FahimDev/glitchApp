@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:glitchApp/academic.dart';
 import 'package:glitchApp/main.dart';
 import 'package:glitchApp/profile.dart';
+import 'package:glitchApp/social.dart';
 import 'package:glitchApp/webview.dart';
 
 import 'acquisition.dart';
@@ -645,7 +646,15 @@ class MyMenu extends StatelessWidget {
                                             color: Colors.white70,
                                           ),
                                           iconSize: 60,
-                                          onPressed: null),
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    SocialPage(),
+                                              ),
+                                            );
+                                          }),
                                     ),
                                     Container(
                                       child: Text(
