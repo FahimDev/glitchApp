@@ -6,32 +6,35 @@ import 'package:glitchApp/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
-class changePass extends StatelessWidget {
+class AddRefe extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false, home: changePassword());
+    return MaterialApp(debugShowCheckedModeBanner: false, home: AddRef());
   }
 }
 
-class changePassword extends StatefulWidget {
+class AddRef extends StatefulWidget {
   var userName;
   var token;
 
-  changePassword({this.token, this.userName});
+  AddRef({this.token, this.userName});
 
   @override
-  _changePasswordState createState() => _changePasswordState();
+  _AddRefState createState() => _AddRefState();
 }
 
-class _changePasswordState extends State<changePassword> {
+class _AddRefState extends State<AddRef> {
   var userName = LoginPage.user;
   var token = LoginPage.token;
   var passwd = LoginPage.passwd;
   var baseURL = LoginPage.baseURL;
 
-  TextEditingController newPasswd = new TextEditingController();
-  TextEditingController oldpasswd = new TextEditingController();
+  TextEditingController title = new TextEditingController();
+  TextEditingController name = new TextEditingController();
+  TextEditingController position = new TextEditingController();
+  TextEditingController contact = new TextEditingController();
+  TextEditingController eMail = new TextEditingController();
+  TextEditingController url = new TextEditingController();
 
   var keyColor0 = Colors.black54;
   var keyColor1 = Colors.black54;
@@ -42,16 +45,22 @@ class _changePasswordState extends State<changePassword> {
         "Password": passwd,
       };
 
-  Future<String> updatePasswd() async {
-    var responser = await http.put(
+  Future<String> addRef() async {
+    var responser = await http.post(
         "" +
             baseURL +
-            "update-password?newPassword=" +
-            newPasswd.text +
-            "&oldPassword=" +
-            oldpasswd.text +
-            "&userName=" +
-            userName +
+            "update-reference?title=" +
+            title.text +
+            "&name=" +
+            name.text +
+            "&position=" +
+            position.text +
+            "&contact=" +
+            contact.text +
+            "&eMail=" +
+            eMail.text +
+            "&url=" +
+            url.text +
             "",
         headers: headers);
 
@@ -113,7 +122,7 @@ class _changePasswordState extends State<changePassword> {
           ),
         ),
       );
-    } else {
+    } else if (responser.body == "success") {
       showDialog(
         context: context,
         child: new AlertDialog(
@@ -121,7 +130,7 @@ class _changePasswordState extends State<changePassword> {
           content: new Stack(
             children: <Widget>[
               Container(
-                child: Text("Your password has been updated."),
+                child: Text("Your reference has been added."),
               )
             ],
           ),
@@ -129,14 +138,27 @@ class _changePasswordState extends State<changePassword> {
             RaisedButton(
               onPressed: () {
                 Navigator.of(context, rootNavigator: true).pop('dialog');
-                (context as Element).reassemble();
+                Navigator.of(context, rootNavigator: true).pop('dialog');
               },
               child: Text("ok"),
             ),
           ],
         ),
       );
-      //passwd = newPasswd.text;
+    } else {
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Unknown Error!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Something went wrong.Please,try again."),
+              )
+            ],
+          ),
+        ),
+      );
     }
 
     return "Success";
@@ -153,7 +175,7 @@ class _changePasswordState extends State<changePassword> {
       appBar: AppBar(
         backgroundColor: Color(0xFF1976D2),
         title: Text(
-          "Change Password",
+          "Add New Reference",
           style: TextStyle(fontFamily: 'Raleway', color: Colors.white),
         ),
       ),
@@ -179,7 +201,7 @@ class _changePasswordState extends State<changePassword> {
                 backgroundColor: Color(0xFF398AE5),
                 radius: 50,
                 child: FaIcon(
-                  FontAwesomeIcons.expeditedssl,
+                  FontAwesomeIcons.userTie,
                   color: Colors.white70,
                   size: 60,
                 ),
@@ -191,27 +213,17 @@ class _changePasswordState extends State<changePassword> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 child: TextField(
-                  onEditingComplete: () {
-                    if (oldpasswd.text == passwd) {
-                      keyColor0 = Colors.green;
-                    } else {
-                      keyColor0 = Colors.red;
-                    }
-                  },
-                  onChanged: (value) {
-                    if (oldpasswd.text == passwd) {
-                      keyColor0 = Colors.green;
-                    } else {
-                      keyColor0 = Colors.red;
-                    }
-                  },
-                  controller: oldpasswd,
+                  controller: title,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.vpn_key,
-                      color: keyColor0,
+                    prefixIcon: CircleAvatar(
+                      child: FaIcon(
+                        FontAwesomeIcons.userTag,
+                        color: Colors.black54,
+                        size: 30,
+                      ),
+                      backgroundColor: Colors.transparent,
                     ),
-                    labelText: "Current Password",
+                    labelText: "Title",
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black38),
                     ),
@@ -222,20 +234,101 @@ class _changePasswordState extends State<changePassword> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 child: TextField(
-                  onChanged: (value) {
-                    if (newPasswd.text == passwd) {
-                      keyColor1 = Colors.red;
-                    } else {
-                      keyColor1 = Colors.green;
-                    }
-                  },
-                  controller: newPasswd,
+                  controller: name,
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
-                      Icons.vpn_key,
-                      color: keyColor1,
+                    prefixIcon: CircleAvatar(
+                      child: FaIcon(
+                        FontAwesomeIcons.signature,
+                        color: Colors.black54,
+                        size: 30,
+                      ),
+                      backgroundColor: Colors.transparent,
                     ),
-                    labelText: "New Password",
+                    labelText: "Name",
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black38),
+                    ),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                child: TextField(
+                  controller: position,
+                  decoration: InputDecoration(
+                    prefixIcon: CircleAvatar(
+                      child: FaIcon(
+                        FontAwesomeIcons.chair,
+                        color: Colors.black54,
+                        size: 30,
+                      ),
+                      backgroundColor: Colors.transparent,
+                    ),
+                    labelText: "Position",
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black38),
+                    ),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                child: TextField(
+                  controller: contact,
+                  decoration: InputDecoration(
+                    prefixIcon: CircleAvatar(
+                      child: FaIcon(
+                        FontAwesomeIcons.mobileAlt,
+                        color: Colors.black54,
+                        size: 30,
+                      ),
+                      backgroundColor: Colors.transparent,
+                    ),
+                    labelText: "Contact [Optional]",
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black38),
+                    ),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                child: TextField(
+                  controller: eMail,
+                  decoration: InputDecoration(
+                    prefixIcon: CircleAvatar(
+                      child: FaIcon(
+                        FontAwesomeIcons.envelope,
+                        color: Colors.black54,
+                        size: 30,
+                      ),
+                      backgroundColor: Colors.transparent,
+                    ),
+                    labelText: "e-mail",
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black38),
+                    ),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+                child: TextField(
+                  controller: url,
+                  decoration: InputDecoration(
+                    prefixIcon: CircleAvatar(
+                      child: FaIcon(
+                        FontAwesomeIcons.link,
+                        color: Colors.black54,
+                        size: 30,
+                      ),
+                      backgroundColor: Colors.transparent,
+                    ),
+                    labelText: "URL [Optional]",
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black38),
                     ),
@@ -248,90 +341,15 @@ class _changePasswordState extends State<changePassword> {
                 child: RaisedButton.icon(
                   //Update Password
                   onPressed: () {
-                    if (newPasswd.text.length < 5) {
-                      showDialog(
-                        context: context,
-                        child: new AlertDialog(
-                          title: new Text("Too Short!"),
-                          content: new Stack(
-                            children: <Widget>[
-                              Container(
-                                child: Text(
-                                    "Please, try something BIG!.[Minimum length 6]"),
-                              )
-                            ],
-                          ),
-                          actions: <Widget>[
-                            RaisedButton(
-                              onPressed: () {
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop('dialog');
-                              },
-                              child: Text("ok"),
-                            ),
-                          ],
-                        ),
-                      );
-                    } else if (oldpasswd.text != passwd) {
-                      showDialog(
-                        context: context,
-                        child: new AlertDialog(
-                          title: new Text("Error!"),
-                          content: new Stack(
-                            children: <Widget>[
-                              Container(
-                                child: Text(
-                                    "Current password is incorrect!Please,try again."),
-                              )
-                            ],
-                          ),
-                          actions: <Widget>[
-                            RaisedButton(
-                              onPressed: () {
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop('dialog');
-                              },
-                              child: Text("ok"),
-                            ),
-                          ],
-                        ),
-                      );
-                    } else if (newPasswd.text == passwd) {
-                      showDialog(
-                        context: context,
-                        child: new AlertDialog(
-                          title: new Text("Error!"),
-                          content: new Stack(
-                            children: <Widget>[
-                              Container(
-                                child: Text(
-                                    "Current password & new password can not be same.Please,try again."),
-                              )
-                            ],
-                          ),
-                          actions: <Widget>[
-                            RaisedButton(
-                              onPressed: () {
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop('dialog');
-                              },
-                              child: Text("ok"),
-                            ),
-                          ],
-                        ),
-                      );
-                    } else {
-                      this.updatePasswd();
-                      print(newPasswd.text.length);
-                    }
+                    this.addRef();
                   },
                   icon: FaIcon(
-                    FontAwesomeIcons.key,
+                    FontAwesomeIcons.plusCircle,
                     //color: Colors.white70,
                     size: 20,
                   ),
                   label: Text(
-                    "Update Password",
+                    "Add Reference",
                     //style: TextStyle(fontSize: 15),
                   ),
                   color: Colors.green,

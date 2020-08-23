@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:glitchApp/test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:flutter_uploader/flutter_uploader.dart';
@@ -28,26 +30,14 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  String dropdownValue = 'None';
   TextEditingController newData = new TextEditingController();
   var picture;
   File _image;
   final picker = ImagePicker();
   Future cameraImg() async {
     final pickedFile = await picker.getImage(source: ImageSource.camera);
-    /*
-    File imageCropper = await ImageCropper.cropImage(
-        sourcePath: pickedFile.path,
-        aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1),
-        compressQuality: 100,
-        maxWidth: 700,
-        maxHeight: 700,
-        compressFormat: ImageCompressFormat.jpg,
-        androidUiSettings: AndroidUiSettings(
-            toolbarColor: Colors.blueAccent,
-            toolbarTitle: "Crop & Upload",
-            backgroundColor: Colors.lightBlue,
-            statusBarColor: Colors.lightBlueAccent));
-            */
+
     setState(() {
       //_image = File(pickedFile.path); //imageCropper;
       picture = pickedFile;
@@ -86,6 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
   editForm(String type, String current) {
     type;
     var currentInfo = current;
+
     newData.text = currentInfo;
     var newInfo;
     showDialog(
@@ -168,12 +159,12 @@ class _ProfilePageState extends State<ProfilePage> {
   var mother = "Parents";
   var relation = "Null";
   var religion = "Null";
+  var blood = "Null";
+  var gender = "Null";
 
   Future<String> getProfile() async {
-    var responser = await http.get(
-        "http://www.office-rest.api.glitch-innovations.com/member-profile/" +
-            userName +
-            "");
+    var responser =
+        await http.get("" + baseURL + "member-profile/" + userName + "");
     myElement = json.decode(responser.body.toString());
     data = myElement[0];
 
@@ -190,6 +181,8 @@ class _ProfilePageState extends State<ProfilePage> {
       religion = data["religion"];
       father = data["fatherName"];
       mother = data["motherName"];
+      blood = data["blood"];
+      gender = data["gender"];
       print(data);
       print(data["fullName"]);
     }
@@ -203,7 +196,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Future<String> makeChange(String type) async {
     var changeInfo = await http.put(
-        "http://www.office-rest.api.glitch-innovations.com/update-profile?userName=" +
+        "" +
+            baseURL +
+            "update-profile?userName=" +
             userName +
             "&type=" +
             type +
@@ -215,6 +210,9 @@ class _ProfilePageState extends State<ProfilePage> {
     (context as Element).reassemble();
     print(changeInfo.body);
   }
+
+  //##############Under DEVELOPMENT############
+  //##############"Invalid Token !"############
 
   _asyncFileUpload() async {
     //create multipart request for POST or PATCH method
@@ -523,6 +521,66 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     Container(
                                       child: ListTile(
+                                        title: Text("Blood Group:"),
+                                        subtitle: Text(blood),
+                                        leading: FaIcon(
+                                          FontAwesomeIcons.tint,
+                                          color: Colors.red,
+                                          size: 15,
+                                        ),
+                                        trailing: CircleAvatar(
+                                            child: Icon(Icons.edit)),
+                                        onTap: () {
+                                          var type = "Blood Group";
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => TestME(
+                                                        type: type,
+                                                      )));
+                                        },
+                                      ),
+                                    ),
+                                    Container(
+                                      child: ListTile(
+                                        title: Text("Gender:"),
+                                        subtitle: Text(gender),
+                                        leading: gender == "Male"
+                                            ? FaIcon(
+                                                FontAwesomeIcons.mars,
+                                                size: 15,
+                                              )
+                                            : gender == "Female"
+                                                ? FaIcon(
+                                                    FontAwesomeIcons.venus,
+                                                    size: 15,
+                                                  )
+                                                : gender == "Transgender"
+                                                    ? FaIcon(
+                                                        FontAwesomeIcons
+                                                            .transgender,
+                                                        size: 15,
+                                                      )
+                                                    : FaIcon(
+                                                        FontAwesomeIcons
+                                                            .genderless,
+                                                        size: 15,
+                                                      ),
+                                        trailing: CircleAvatar(
+                                            child: Icon(Icons.edit)),
+                                        onTap: () {
+                                          var type = "Gender";
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => TestME(
+                                                        type: type,
+                                                      )));
+                                        },
+                                      ),
+                                    ),
+                                    Container(
+                                      child: ListTile(
                                         title: Text("Current Address:"),
                                         subtitle: Text(currAdd),
                                         leading: Icon(Icons.arrow_right),
@@ -557,9 +615,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                         trailing: CircleAvatar(
                                             child: Icon(Icons.edit)),
                                         onTap: () {
-                                          var type = "about";
-                                          var current = about;
-                                          editForm(type, current);
+                                          var type = "About";
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => TestME(
+                                                        type: type,
+                                                        currVal: about,
+                                                      )));
                                         },
                                       ),
                                     ),
@@ -643,6 +706,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
 /*
 class Fact {
   int id;
