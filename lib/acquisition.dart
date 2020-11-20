@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
+import 'main.dart';
+
 class WebViewExample extends StatefulWidget {
   @override
   _WebViewExampleState createState() => _WebViewExampleState();
@@ -9,7 +11,7 @@ class WebViewExample extends StatefulWidget {
 class _WebViewExampleState extends State<WebViewExample> {
   TextEditingController controller = TextEditingController();
   FlutterWebviewPlugin flutterWebviewPlugin = FlutterWebviewPlugin();
-  var urlString = "https://glitch-innovations.com/Profile/fahim0373";
+  var urlString = "https://www.office.app-service.glitch-innovations.com/";
 
   launchUrl() {
     setState(() {
@@ -45,8 +47,8 @@ class _WebViewExampleState extends State<WebViewExample> {
         ),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.navigate_next),
-            onPressed: () => launchUrl(),
+            icon: Icon(Icons.web),
+            onPressed: () {},
           )
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:glitchApp/academic.dart';
+import 'package:glitchApp/hashTag.dart';
 import 'package:glitchApp/main.dart';
 import 'package:glitchApp/profile.dart';
 import 'package:glitchApp/reference.dart';
@@ -12,6 +13,7 @@ import 'acquisition.dart';
 import 'changePassword.dart';
 import 'contact.dart';
 import 'hobby.dart';
+import 'myLinks.dart';
 
 class MyMenu extends StatelessWidget {
   var accessToken;
@@ -35,11 +37,16 @@ class MyMenu extends StatelessWidget {
           centerTitle: true,
           backgroundColor: Color.fromRGBO(25, 54, 78, 42),
           leading: IconButton(
-            icon: Icon(
-              Icons.android,
-              color: Colors.green,
-            ),
-            onPressed: () {},
+            icon: FaIcon(FontAwesomeIcons.internetExplorer,
+                color: Colors.lightBlueAccent),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserWebViewExample(),
+                ),
+              );
+            },
           ),
         ),
         backgroundColor: Colors.lightBlue,
@@ -381,7 +388,15 @@ class MyMenu extends StatelessWidget {
                                         icon: FaIcon(FontAwesomeIcons.hashtag,
                                             color: Colors.white70),
                                         iconSize: 60,
-                                        onPressed: null,
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HashTagPage(),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
                                     Container(
@@ -520,7 +535,7 @@ class MyMenu extends StatelessWidget {
                                     ),
                                     Container(
                                       child: Text(
-                                        "Pertinence",
+                                        "Attribute",
                                         style: TextStyle(
                                             fontFamily: 'Aleo',
                                             fontStyle: FontStyle.normal,
@@ -714,7 +729,15 @@ class MyMenu extends StatelessWidget {
                                             color: Colors.white70,
                                           ),
                                           iconSize: 60,
-                                          onPressed: null),
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MyLinkPage(),
+                                              ),
+                                            );
+                                          }),
                                     ),
                                     Container(
                                       child: Text(
