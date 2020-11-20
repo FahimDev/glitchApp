@@ -97,7 +97,7 @@ class TestME extends StatelessWidget {
                       height: type == "About" ? 200 : 100,
                       //width: screenWeight,
                       child: ListTile(
-                        title: Text("Correcr your '" + type + "' information:"),
+                        title: Text("Correct your '" + type + "' information:"),
                         subtitle: type == "Gender"
                             ? MyStatefulWidget()
                             : type == "About"
