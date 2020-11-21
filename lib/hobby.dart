@@ -98,7 +98,7 @@ class _HobbyPageState extends State<HobbyPage> {
     );
   }
 
-  editHobbyWindow(var currentInfo) {
+  editHobbyWindow(int id, var currentInfo) {
     newData.text = currentInfo;
     showDialog(
       context: context,
@@ -129,7 +129,7 @@ class _HobbyPageState extends State<HobbyPage> {
           ),
           RaisedButton(
             onPressed: () {
-              this.putHobby(currentInfo, newData.text);
+              this.putHobby(id, currentInfo, newData.text);
             },
             child: Text("Update"),
             color: Colors.green,
@@ -147,7 +147,7 @@ class _HobbyPageState extends State<HobbyPage> {
     );
   }
 
-  confirmDelete(String hobbyName) {
+  confirmDelete(int id, String hobbyName) {
     showDialog(
       context: context,
       child: new AlertDialog(
@@ -164,7 +164,7 @@ class _HobbyPageState extends State<HobbyPage> {
         actions: <Widget>[
           RaisedButton(
             onPressed: () {
-              this.deleteHobby(hobbyName);
+              this.deleteHobby(id, hobbyName);
             },
             child: Text("Delete"),
             color: Colors.red,
@@ -246,11 +246,13 @@ class _HobbyPageState extends State<HobbyPage> {
   }
 
   //#################---->>UPDATE<<----###############
-  Future<String> putHobby(String currHobby, String puteHobby) async {
+  Future<String> putHobby(int id, String currHobby, String puteHobby) async {
     var changeInfo = await http.put(
         "" +
             baseURL +
-            "update-hob?hobby=" +
+            "update-hob?id=" +
+            id.toString() +
+            "&hobby=" +
             currHobby +
             "&changeVal=" +
             puteHobby +
@@ -258,7 +260,7 @@ class _HobbyPageState extends State<HobbyPage> {
         headers: headers);
     Navigator.of(context, rootNavigator: true).pop('dialog');
     (context as Element).reassemble();
-    if (changeInfo.body == "Invalid Token !") {
+    if (changeInfo.body == "401") {
       (context as Element).reassemble();
       showDialog(
         context: context,
@@ -273,7 +275,54 @@ class _HobbyPageState extends State<HobbyPage> {
           ),
         ),
       );
-    } else if (changeInfo.body == "success") {
+    } else if (changeInfo.body == "405") {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Request Method Unknown. [Status Code: 405]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else if (changeInfo.body == "304") {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child:
+                    Text("Not Modified.Please,try again. [Status Code: 305]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else if (changeInfo.body == "200") {
       (context as Element).reassemble();
       showDialog(
         context: context,
@@ -282,7 +331,7 @@ class _HobbyPageState extends State<HobbyPage> {
           content: new Stack(
             children: <Widget>[
               Container(
-                child: Text("The point has been updated."),
+                child: Text("Hobby has been updated."),
               )
             ],
           ),
@@ -301,14 +350,23 @@ class _HobbyPageState extends State<HobbyPage> {
       showDialog(
         context: context,
         child: new AlertDialog(
-          title: new Text("Something went Wrong"),
+          title: new Text("Error!"),
           content: new Stack(
             children: <Widget>[
               Container(
-                child: Text("An error occurred.Please,try again."),
+                child: Text("Cause unknown.Please,try again." +
+                    changeInfo.body.toString()),
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
       );
     }
@@ -316,13 +374,19 @@ class _HobbyPageState extends State<HobbyPage> {
   }
 
   //#################---->>REMOVE<<----###############
-  Future<String> deleteHobby(String moveHobby) async {
+  Future<String> deleteHobby(int id, String moveHobby) async {
     var changeInfo = await http.delete(
-        "" + baseURL + "update-hob?hobby=" + moveHobby + "",
+        "" +
+            baseURL +
+            "update-hob?id=" +
+            id.toString() +
+            "&hobby=" +
+            moveHobby +
+            "",
         headers: headers);
     Navigator.of(context, rootNavigator: true).pop('dialog');
     (context as Element).reassemble();
-    if (changeInfo.body == "Invalid Token !") {
+    if (changeInfo.body == "401") {
       (context as Element).reassemble();
       showDialog(
         context: context,
@@ -337,7 +401,54 @@ class _HobbyPageState extends State<HobbyPage> {
           ),
         ),
       );
-    } else {
+    } else if (changeInfo.body == "405") {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Request Method Unknown. [Status Code: 405]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else if (changeInfo.body == "304") {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child:
+                    Text("Not Modified.Please,try again. [Status Code: 305]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else if (changeInfo.body == "200") {
       (context as Element).reassemble();
       showDialog(
         context: context,
@@ -346,7 +457,31 @@ class _HobbyPageState extends State<HobbyPage> {
           content: new Stack(
             children: <Widget>[
               Container(
-                child: Text("Point has been removed."),
+                child: Text("Hobby has been removed."),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Error!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Cause unknown.Please,try again." +
+                    changeInfo.body.toString()),
               )
             ],
           ),
@@ -408,7 +543,8 @@ class _HobbyPageState extends State<HobbyPage> {
                           ),
                           onPressed: () {
                             var hobbyName = myElement[index]["hobby"];
-                            confirmDelete(hobbyName);
+                            int id = myElement[index]["id"];
+                            confirmDelete(id, hobbyName);
                           },
                         ), //FaIcon(FontAwesomeIcons.solidHandPointRight,
                         //color: Colors.white70),
@@ -421,7 +557,8 @@ class _HobbyPageState extends State<HobbyPage> {
                           ),
                           onPressed: () {
                             var currentInfo = myElement[index]["hobby"];
-                            editHobbyWindow(currentInfo);
+                            int id = myElement[index]["id"];
+                            editHobbyWindow(id, currentInfo);
                           },
                         ),
                       ),
