@@ -8,6 +8,7 @@ import 'package:glitchApp/reference.dart';
 import 'package:glitchApp/social.dart';
 import 'package:glitchApp/test.dart';
 import 'package:glitchApp/webview.dart';
+import 'package:glitchApp/work.dart';
 
 import 'acquisition.dart';
 import 'changePassword.dart';
@@ -302,29 +303,38 @@ class MyMenu extends StatelessWidget {
                                 child: Column(
                                   children: <Widget>[
                                     Container(
-                                        decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(80),
-                                            topRight: Radius.circular(80),
-                                          ),
-                                          gradient: LinearGradient(
-                                            colors: <Color>[
-                                              Color(0xFF42A5F5),
-                                              Color(0xFF1976D2),
-                                              Color(0xFF0D47A1),
-                                            ],
-                                          ),
+                                      decoration: const BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(80),
+                                          topRight: Radius.circular(80),
                                         ),
-                                        width: screenWeight / 2,
-                                        height: screenHeight / 5,
-                                        //color: Colors.black12,
-                                        child: IconButton(
-                                            icon: Icon(
-                                              Icons.work,
-                                              color: Colors.white70,
-                                            ),
-                                            iconSize: 60,
-                                            onPressed: null)),
+                                        gradient: LinearGradient(
+                                          colors: <Color>[
+                                            Color(0xFF42A5F5),
+                                            Color(0xFF1976D2),
+                                            Color(0xFF0D47A1),
+                                          ],
+                                        ),
+                                      ),
+                                      width: screenWeight / 2,
+                                      height: screenHeight / 5,
+                                      //color: Colors.black12,
+                                      child: IconButton(
+                                          icon: Icon(
+                                            Icons.work,
+                                            color: Colors.white70,
+                                          ),
+                                          iconSize: 60,
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    WorkStatusPage(),
+                                              ),
+                                            );
+                                          }),
+                                    ),
                                     Container(
                                       child: Text(
                                         "Employment",

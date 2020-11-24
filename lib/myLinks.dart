@@ -386,8 +386,9 @@ class _MyLinkPageState extends State<MyLinkPage> {
           content: new Stack(
             children: <Widget>[
               Container(
-                child: Text("Cause unknown.Please,try again." +
-                    changeInfo.body.toString()),
+                child: Text("Cause unknown.Please,try again. [" +
+                    changeInfo.body.toString() +
+                    "]"),
               )
             ],
           ),
@@ -646,10 +647,7 @@ class _MyLinkPageState extends State<MyLinkPage> {
           String type = "add";
           updateButt(id, name, url, type);
         },
-        child: Icon(
-          Icons.add_box,
-          color: Colors.white,
-        ),
+        child: FaIcon(FontAwesomeIcons.anchor),
         backgroundColor: Color(0xFF1976D2),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,

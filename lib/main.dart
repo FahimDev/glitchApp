@@ -38,6 +38,8 @@ class _LoginPageState extends State<LoginPage> {
   var buttonColor = Color(0xFF61A4F1);
   var buttonColor1 = Color(0xFF478DE0);
 
+  bool _passVisibility = true;
+
   Map<String, String> get headers => {
         "User-Name": userName.text,
         "Password": password.text,
@@ -133,11 +135,30 @@ class _LoginPageState extends State<LoginPage> {
                   child: Container(
                     child: IconButton(
                       icon: FaIcon(
-                        FontAwesomeIcons.userAstronaut,
+                        password.text.length == 0
+                            ? FontAwesomeIcons.userAstronaut
+                            : password.text.length != 0 &&
+                                    _passVisibility == true
+                                ? FontAwesomeIcons.eye
+                                : password.text.length != 0 &&
+                                        _passVisibility == false
+                                    ? FontAwesomeIcons.eyeSlash
+                                    : FontAwesomeIcons.userAstronaut,
                         color: Colors.white70,
                       ),
                       iconSize: 70,
-                      onPressed: null,
+                      onPressed: () {
+                        if (password.text.length != 0 &&
+                            _passVisibility == true) {
+                          _passVisibility = false;
+                          (context as Element).reassemble();
+                          print(_passVisibility);
+                        } else if (password.text.length != 0 &&
+                            _passVisibility == false) {
+                          _passVisibility = true;
+                          (context as Element).reassemble();
+                        }
+                      },
                     ),
                   ),
                 )
@@ -213,7 +234,12 @@ class _LoginPageState extends State<LoginPage> {
                           children: <Widget>[
                             TextField(
                               controller: password,
-                              decoration: InputDecoration(hintText: "Password"),
+                              decoration: InputDecoration(
+                                hintText: "Password",
+                              ),
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              obscureText: _passVisibility,
                             )
                           ],
                         ),
