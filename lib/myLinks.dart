@@ -61,19 +61,11 @@ class _MyLinkPageState extends State<MyLinkPage> {
       titleData.text = "";
       urlData.text = "";
     }
-
+    bool next = false;
     showDialog(
       context: context,
       child: new AlertDialog(
-        title: TextField(
-          keyboardType: TextInputType.multiline,
-          minLines: 1,
-          maxLines: 5,
-          controller: titleData,
-          decoration: InputDecoration(
-              hintText: "Button Title",
-              counterText: "Current Title :" + currentInfo),
-        ),
+        title: Text("ok"),
         content: new Stack(
           children: <Widget>[
             Container(
@@ -81,12 +73,15 @@ class _MyLinkPageState extends State<MyLinkPage> {
                 keyboardType: TextInputType.multiline,
                 minLines: 1,
                 maxLines: 5,
-                controller: urlData,
+                controller: next == false ? titleData : urlData,
                 decoration: InputDecoration(
-                    hintText: "Paste Related URL",
-                    counterText: "Current URL :" + url),
+                    hintText:
+                        next == false ? "Button Title" : "Paste Related URL",
+                    counterText: next == false
+                        ? "Current Title :" + currentInfo
+                        : "Current URL :" + url),
               ),
-            )
+            ),
           ],
         ),
         actions: <Widget>[
@@ -94,9 +89,10 @@ class _MyLinkPageState extends State<MyLinkPage> {
             onPressed: () {
               urlData.text = "";
             },
-            child: Text("Clear URL"),
+            child: Text("Clear Text"),
             color: Colors.yellowAccent,
           ),
+          //https://stackoverflow.com/questions/51962272/how-to-refresh-an-alertdialog-in-flutter
           RaisedButton(
             onPressed: () {
               type == "edit"

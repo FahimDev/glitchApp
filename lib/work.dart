@@ -56,7 +56,7 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
 
   TextEditingController newData = new TextEditingController();
   DateTime _dateTime;
-
+  var jobDate;
   editWorkWindow(
       String title, String name, int id, String changeKey, String currentInfo) {
     newData.text = currentInfo;
@@ -82,10 +82,11 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
                           lastDate: DateTime(2060),
                         ).then((date) {
                           setState(() {
+                            jobDate = "${date.day}-${date.month}-${date.year}";
                             _dateTime = date;
                           });
-                          //end.text = dateFormat.format(_dateTime);
-                          newData.text = _dateTime.toString();
+
+                          newData.text = jobDate;
                         });
                       },
                     )
@@ -433,6 +434,7 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWeight = MediaQuery.of(context).size.width;
+
     //var token = LoginPage.token;
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,

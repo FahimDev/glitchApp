@@ -80,6 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
     newData.text = currentInfo;
     var newInfo;
     showDialog(
+      //barrierDismissible: false,
       context: context,
       child: new AlertDialog(
         title: new Text("Change '" + type + "' section ?"),
@@ -93,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 controller: newData,
                 decoration: InputDecoration(
                   hintText: type,
-                  counterText: "Current Information :" + currentInfo,
+                  //counterText: "Current Information :" + currentInfo,
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue),
                   ),

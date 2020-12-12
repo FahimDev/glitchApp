@@ -254,6 +254,9 @@ class _AddWorkState extends State<AddWork> {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWeight = MediaQuery.of(context).size.width;
 
+    var startJob;
+    var endJob;
+
     //var token = LoginPage.token;
     return Scaffold(
       backgroundColor: Color(0xFF73AEF5),
@@ -373,9 +376,10 @@ class _AddWorkState extends State<AddWork> {
                       lastDate: DateTime(2060),
                     ).then((date) {
                       setState(() {
+                        startJob = "${date.day}-${date.month}-${date.year}";
                         _dateTime = date;
                       });
-                      start.text = _dateTime.toString();
+                      start.text = startJob;
                     });
                   },
                   decoration: InputDecoration(
@@ -408,10 +412,11 @@ class _AddWorkState extends State<AddWork> {
                       lastDate: DateTime(2060),
                     ).then((date) {
                       setState(() {
+                        endJob = "${date.day}-${date.month}-${date.year}";
                         _dateTime = date;
                       });
-                      //end.text = dateFormat.format(_dateTime);
-                      end.text = _dateTime.toString();
+
+                      end.text = endJob;
                     });
                   },
                   decoration: InputDecoration(
