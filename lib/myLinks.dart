@@ -27,11 +27,6 @@ class _MyLinkPageState extends State<MyLinkPage> {
   var token = LoginPage.token;
   var passwd = LoginPage.passwd;
   var baseURL = LoginPage.baseURL;
-  /*
-  Future<String> valUpdater() async {
-    
-  }
-  */
 
   Map<String, String> get headers => {
         "Access-Token": token,
@@ -51,70 +46,6 @@ class _MyLinkPageState extends State<MyLinkPage> {
 
   TextEditingController titleData = new TextEditingController();
   TextEditingController urlData = new TextEditingController();
-
-  updateButt(int id, String name, String url, String type) {
-    var currentInfo = name;
-    if (type == "edit") {
-      titleData.text = currentInfo;
-      urlData.text = url;
-    } else {
-      titleData.text = "";
-      urlData.text = "";
-    }
-    bool next = false;
-    showDialog(
-      context: context,
-      child: new AlertDialog(
-        title: Text("ok"),
-        content: new Stack(
-          children: <Widget>[
-            Container(
-              child: TextField(
-                keyboardType: TextInputType.multiline,
-                minLines: 1,
-                maxLines: 5,
-                controller: next == false ? titleData : urlData,
-                decoration: InputDecoration(
-                    hintText:
-                        next == false ? "Button Title" : "Paste Related URL",
-                    counterText: next == false
-                        ? "Current Title :" + currentInfo
-                        : "Current URL :" + url),
-              ),
-            ),
-          ],
-        ),
-        actions: <Widget>[
-          RaisedButton(
-            onPressed: () {
-              urlData.text = "";
-            },
-            child: Text("Clear Text"),
-            color: Colors.yellowAccent,
-          ),
-          //https://stackoverflow.com/questions/51962272/how-to-refresh-an-alertdialog-in-flutter
-          RaisedButton(
-            onPressed: () {
-              type == "edit"
-                  ? putLinkButt(id, name, titleData.text, urlData.text)
-                  : postLinkButt(titleData.text, urlData.text);
-              Navigator.of(context, rootNavigator: true).pop('dialog');
-            },
-            child: type == "edit" ? Text("Update") : Text("Add"),
-            color: Colors.green,
-          ),
-          RaisedButton(
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop('dialog');
-              //(context as Element).reassemble();
-            },
-            child: Text("No"),
-            color: Colors.red,
-          ),
-        ],
-      ),
-    );
-  }
 
   confirmDelete(int id, String buttNane) {
     showDialog(
@@ -601,12 +532,25 @@ class _MyLinkPageState extends State<MyLinkPage> {
                           ),
                           onPressed: () {
                             var type = "edit";
+                            /*
                             updateButt(
                               myElement[index]["id"],
                               myElement[index]["buttonTitle"],
                               myElement[index]["url"],
                               type,
                             );
+                            */
+
+                            showDialog(
+                                context: context,
+                                builder: (_) {
+                                  return MyDialog(
+                                    id: myElement[index]["id"],
+                                    name: myElement[index]["buttonTitle"],
+                                    url: myElement[index]["url"],
+                                    type: type,
+                                  );
+                                });
                           },
                         ),
                       ),
@@ -641,7 +585,17 @@ class _MyLinkPageState extends State<MyLinkPage> {
           String name = "glitch";
           String url = "www.glitch-innovation.com";
           String type = "add";
-          updateButt(id, name, url, type);
+          //updateButt(id, name, url, type);
+          showDialog(
+              context: context,
+              builder: (_) {
+                return MyDialog(
+                  id: id,
+                  name: name,
+                  url: url,
+                  type: type,
+                );
+              });
         },
         child: FaIcon(FontAwesomeIcons.anchor),
         backgroundColor: Color(0xFF1976D2),
@@ -650,3 +604,504 @@ class _MyLinkPageState extends State<MyLinkPage> {
     );
   }
 }
+
+class MyDialog extends StatefulWidget {
+  int id;
+  String name;
+  String url;
+  String type;
+
+  MyDialog(
+      {Key key,
+      @required this.id,
+      @required this.name,
+      @required this.url,
+      @required this.type})
+      : super(key: key);
+
+  @override
+  _MyDialogState createState() => new _MyDialogState(id, name, url, type);
+}
+
+class _MyDialogState extends State<MyDialog> {
+  bool next = false;
+  int id;
+  String name;
+  String url;
+  String type;
+
+  TextEditingController titleData = new TextEditingController();
+  TextEditingController urlData = new TextEditingController();
+
+  _MyDialogState(this.id, this.name, this.url, this.type);
+
+  var userName = LoginPage.user;
+  var token = LoginPage.token;
+  var passwd = LoginPage.passwd;
+  var baseURL = LoginPage.baseURL;
+
+  Map<String, String> get headers => {
+        "Access-Token": token,
+        "User-Name": userName,
+        "Password": passwd,
+      };
+
+  //#################---->>ADD NEW<<----###############
+  Future<String> postLinkButt(String title, String urlData) async {
+    var changeInfo = await http.post(
+        "" + baseURL + "/update-links?title=" + title + "&url=" + urlData + "",
+        headers: headers);
+
+    //Navigator.of(context, rootNavigator: true).pop('dialog');
+    (context as Element).reassemble();
+    print("THIS-->" + title + urlData);
+    print("THE RESPONSE ---->" + changeInfo.body);
+
+    if (changeInfo.body == "401") {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Something went Wrong"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Your session is over.Please,login again."),
+              )
+            ],
+          ),
+        ),
+      );
+    } else if (changeInfo.body == "405") {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Request Method Unknown. [Status Code: 405]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else if (changeInfo.body == "304") {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child:
+                    Text("Not Modified.Please,try again. [Status Code: 305]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else if (changeInfo.body == "200") {
+      //(context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Done!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Button has been added."),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Error!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Cause unknown.Please,try again." +
+                    changeInfo.body.toString()),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    }
+    print("THE RESPONSE ---->" + changeInfo.body);
+  }
+
+  //#################---->>UPDATE<<----###############
+  Future<String> putLinkButt(
+      int currID, String buttTitle, String newTitle, String buttURL) async {
+    print(buttTitle + "This is NEW--------------->" + newTitle);
+    var changeInfo = await http.put(
+        "" +
+            baseURL +
+            "update-links?title=" +
+            buttTitle +
+            "&id=" +
+            currID.toString() +
+            "&changeKey=" +
+            newTitle +
+            "&changeVal=" +
+            buttURL +
+            "",
+        headers: headers);
+    //(context as Element).reassemble();
+
+    print("THIS IS RESPONSE -->" +
+        changeInfo.body +
+        currID.toString() +
+        buttTitle);
+
+    if (changeInfo.body == "401") {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Something went Wrong"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Your session is over.Please,login again."),
+              )
+            ],
+          ),
+        ),
+      );
+    } else if (changeInfo.body == "405") {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Request Method Unknown. [Status Code: 405]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else if (changeInfo.body == "304") {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child:
+                    Text("Not Modified.Please,try again. [Status Code: 305]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else if (changeInfo.body == "200") {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Done!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Button has been updated."),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Error!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Cause unknown.Please,try again. [" +
+                    changeInfo.body.toString() +
+                    "]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    }
+    print(changeInfo.body);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var newTitle;
+    if (type == "edit" && next == false) {
+      titleData.text = name;
+      urlData.text = url;
+    }
+
+    return AlertDialog(
+      title: Text(next == false
+          ? "Button Title"
+          : next == true
+              ? "Anchor URL"
+              : "Action"),
+      content: new Stack(
+        children: <Widget>[
+          Container(
+            child: TextField(
+              keyboardType: TextInputType.multiline,
+              minLines: 1,
+              maxLines: 5,
+              controller: next == false ? titleData : urlData,
+              decoration: InputDecoration(
+                  hintText:
+                      next == false ? "Button Title" : "Paste Related URL",
+                  counterText: next == false
+                      ? "Current Title :" + name
+                      : "Current URL :" + url),
+            ),
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        RaisedButton(
+          onPressed: () {
+            next == false ? titleData.text = "" : urlData.text = "";
+          },
+          child: next == false
+              ? Text("Clear Text")
+              : next == true
+                  ? Text("Clear URL")
+                  : Text("Clear"),
+          color: Colors.yellowAccent,
+        ),
+        RaisedButton(
+          onPressed: () => setState(
+            () {
+              if (next == false) {
+                if (titleData.text.length <= 0) {
+                  showDialog(
+                    context: context,
+                    child: new AlertDialog(
+                      title: new Text("Emplty Flex"),
+                      content: new Stack(
+                        children: <Widget>[
+                          Container(
+                            child: Text("Button title can not be empty!"),
+                          )
+                        ],
+                      ),
+                      actions: <Widget>[
+                        RaisedButton(
+                          onPressed: () {
+                            Navigator.of(context, rootNavigator: true)
+                                .pop('dialog');
+                          },
+                          child: Text("ok"),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  newTitle = titleData.text;
+                  print(newTitle);
+                  titleData.text = newTitle;
+                  next = true;
+                }
+              } else {
+                if (urlData.text.length <= 0) {
+                  showDialog(
+                    context: context,
+                    child: new AlertDialog(
+                      title: new Text("Emplty Flex"),
+                      content: new Stack(
+                        children: <Widget>[
+                          Container(
+                            child: Text("Button URL can not be empty!"),
+                          )
+                        ],
+                      ),
+                      actions: <Widget>[
+                        RaisedButton(
+                          onPressed: () {
+                            Navigator.of(context, rootNavigator: true)
+                                .pop('dialog');
+                          },
+                          child: Text("ok"),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  print(titleData.text + urlData.text);
+                  type == "edit"
+                      ? putLinkButt(id, name, titleData.text, urlData.text)
+                      : postLinkButt(titleData.text, urlData.text);
+                  Navigator.of(context, rootNavigator: true).pop('dialog');
+                }
+              }
+            },
+          ),
+          child: next == false
+              ? Text("Next")
+              : type == "edit" && next == true
+                  ? Text("Update")
+                  : type == "add" && next == true
+                      ? Text("Add")
+                      : Text("Action"),
+          color: Colors.green,
+        ),
+        RaisedButton(
+          onPressed: () {
+            Navigator.of(context, rootNavigator: true).pop('dialog');
+            //(context as Element).reassemble();
+          },
+          child: Text("No"),
+          color: Colors.red,
+        ),
+      ],
+    );
+  }
+}
+/* 
+ updateButt(int id, String name, String url, String type) {
+    var currentInfo = name;
+    if (type == "edit") {
+      titleData.text = currentInfo;
+      urlData.text = url;
+    } else {
+      titleData.text = "";
+      urlData.text = "";
+    }
+    bool next = false;
+    showDialog(
+      context: context,
+      child: new AlertDialog(
+        title: Text("ok"),
+        content: new Stack(
+          children: <Widget>[
+            Container(
+              child: TextField(
+                keyboardType: TextInputType.multiline,
+                minLines: 1,
+                maxLines: 5,
+                controller: next == false ? titleData : urlData,
+                decoration: InputDecoration(
+                    hintText:
+                        next == false ? "Button Title" : "Paste Related URL",
+                    counterText: next == false
+                        ? "Current Title :" + currentInfo
+                        : "Current URL :" + url),
+              ),
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          RaisedButton(
+            onPressed: () {
+              urlData.text = "";
+            },
+            child: Text("Clear Text"),
+            color: Colors.yellowAccent,
+          ),
+          
+          RaisedButton(
+            onPressed: () {
+              type == "edit"
+                  ? putLinkButt(id, name, titleData.text, urlData.text)
+                  : postLinkButt(titleData.text, urlData.text);
+              Navigator.of(context, rootNavigator: true).pop('dialog');
+            },
+            child: type == "edit" ? Text("Update") : Text("Add"),
+            color: Colors.green,
+          ),
+          RaisedButton(
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).pop('dialog');
+              //(context as Element).reassemble();
+            },
+            child: Text("No"),
+            color: Colors.red,
+          ),
+        ],
+      ),
+    );
+  }
+*/

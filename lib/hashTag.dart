@@ -17,9 +17,6 @@ class HashTag extends StatelessWidget {
 }
 
 class HashTagPage extends StatefulWidget {
-  static var hashType = _HashTagPageState.hashType;
-  static var currentInfo = _HashTagPageState.currentInfo;
-
   @override
   _HashTagPageState createState() => _HashTagPageState();
 }
@@ -27,7 +24,7 @@ class HashTagPage extends StatefulWidget {
 class _HashTagPageState extends State<HashTagPage> {
   List myElement;
   var data;
-  static var hashType = "type";
+  var hashType = "type";
   static var currentInfo = "current";
 
   var userName = LoginPage.user;
@@ -90,76 +87,6 @@ class _HashTagPageState extends State<HashTagPage> {
         ],
       ),
     );
-  }
-
-  //#################---->>UPDATE<<----###############
-  Future<String> putHobby(String currHobby, String puteHobby) async {
-    var changeInfo = await http.put(
-        "" +
-            baseURL +
-            "update-hob?hobby=" +
-            currHobby +
-            "&changeVal=" +
-            puteHobby +
-            "",
-        headers: headers);
-    Navigator.of(context, rootNavigator: true).pop('dialog');
-    (context as Element).reassemble();
-    if (changeInfo.body == "Invalid Token !") {
-      (context as Element).reassemble();
-      showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: new Text("Something went Wrong"),
-          content: new Stack(
-            children: <Widget>[
-              Container(
-                child: Text("Your session is over.Please,login again."),
-              )
-            ],
-          ),
-        ),
-      );
-    } else if (changeInfo.body == "success") {
-      (context as Element).reassemble();
-      showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: new Text("Done!"),
-          content: new Stack(
-            children: <Widget>[
-              Container(
-                child: Text("The point has been updated."),
-              )
-            ],
-          ),
-          actions: <Widget>[
-            RaisedButton(
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true).pop('dialog');
-              },
-              child: Text("ok"),
-            ),
-          ],
-        ),
-      );
-    } else {
-      (context as Element).reassemble();
-      showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: new Text("Something went Wrong"),
-          content: new Stack(
-            children: <Widget>[
-              Container(
-                child: Text("An error occurred.Please,try again."),
-              )
-            ],
-          ),
-        ),
-      );
-    }
-    print(changeInfo.body);
   }
 
   //#################---->>REMOVE<<----###############
@@ -325,7 +252,12 @@ class _HashTagPageState extends State<HashTagPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AddHashTag(),
+                                builder: (context) => AddHashTag(
+                                  id: idHashTag,
+                                  hashTitle: currentInfo,
+                                  hashType: hashType,
+                                  hashCol: colHashTag,
+                                ),
                               ),
                             );
                           },
@@ -366,7 +298,12 @@ class _HashTagPageState extends State<HashTagPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddHashTag(),
+              builder: (context) => AddHashTag(
+                id: 0,
+                hashType: hashType,
+                hashTitle: currentInfo,
+                hashCol: "Light Blue",
+              ),
             ),
           );
         },

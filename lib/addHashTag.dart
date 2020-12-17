@@ -8,8 +8,22 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 class AddHashTag extends StatefulWidget {
+  int id;
+  var hashType;
+  var hashTitle;
+  var hashCol;
+
+  AddHashTag(
+      {Key key,
+      @required this.id,
+      @required this.hashType,
+      @required this.hashTitle,
+      @required this.hashCol})
+      : super(key: key);
+
   @override
-  _AddHashTagState createState() => _AddHashTagState();
+  _AddHashTagState createState() =>
+      _AddHashTagState(id, hashType, hashTitle, hashCol);
 }
 
 class _AddHashTagState extends State<AddHashTag> {
@@ -29,7 +43,7 @@ class _AddHashTagState extends State<AddHashTag> {
         "Password": passwd,
       };
 
-  Future<String> addRef(String title, String color) async {
+  Future<String> addHash(String title, String color) async {
     var responser = await http.post(
         "" +
             baseURL +
@@ -41,7 +55,7 @@ class _AddHashTagState extends State<AddHashTag> {
         headers: headers);
 
     print(responser.body);
-    if (responser.body == "Invalid Token !") {
+    if (responser.body == "401") {
       (context as Element).reassemble();
       showDialog(
         context: context,
@@ -56,49 +70,55 @@ class _AddHashTagState extends State<AddHashTag> {
           ),
         ),
       );
-    } else if (responser.body == "Unauthorized.") {
+    } else if (responser.body == "405") {
+      (context as Element).reassemble();
       showDialog(
         context: context,
         child: new AlertDialog(
-          title: new Text("Something went Wrong"),
+          title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
               Container(
-                child: Text("Authorization ERROR.Please,login again."),
+                child: Text("Request Method Unknown. [Status Code: 405]"),
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
       );
-    } else if (responser.body == "Wrong Password !") {
+    } else if (responser.body == "304") {
+      (context as Element).reassemble();
       showDialog(
         context: context,
         child: new AlertDialog(
-          title: new Text("Something went Wrong"),
+          title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
               Container(
-                child: Text("Please,re-login and try again."),
+                child:
+                    Text("Not Modified.Please,try again. [Status Code: 305]"),
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
       );
-    } else if (responser.body == "Update fail") {
-      showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: new Text("Something went Wrong!"),
-          content: new Stack(
-            children: <Widget>[
-              Container(
-                child: Text("Something went wrong.Please,try again."),
-              )
-            ],
-          ),
-        ),
-      );
-    } else if (responser.body == "success") {
+    } else if (responser.body == "200") {
+      (context as Element).reassemble();
       showDialog(
         context: context,
         child: new AlertDialog(
@@ -106,7 +126,36 @@ class _AddHashTagState extends State<AddHashTag> {
           content: new Stack(
             children: <Widget>[
               Container(
-                child: Text("Your reference has been added."),
+                child: Text("New #HashTag has been added."),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HashTagPage()),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Error!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Cause unknown.Please,try again." +
+                    responser.body.toString()),
               )
             ],
           ),
@@ -121,18 +170,138 @@ class _AddHashTagState extends State<AddHashTag> {
           ],
         ),
       );
-    } else {
+    }
+
+    return "Success";
+  }
+
+  Future<String> putHash(int id, String title, String color) async {
+    var responser = await http.put(
+        "" +
+            baseURL +
+            "/update-hashtag?hashTag=" +
+            title +
+            "&color=" +
+            color +
+            "&id=" +
+            id.toString() +
+            "",
+        headers: headers);
+
+    print(responser.body);
+    if (responser.body == "401") {
+      (context as Element).reassemble();
       showDialog(
         context: context,
         child: new AlertDialog(
-          title: new Text("Unknown Error!"),
+          title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
               Container(
-                child: Text("Something went wrong.Please,try again."),
+                child: Text("Your session is over.Please,login again."),
               )
             ],
           ),
+        ),
+      );
+    } else if (responser.body == "405") {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Request Method Unknown. [Status Code: 405]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else if (responser.body == "304") {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child:
+                    Text("Not Modified.Please,try again. [Status Code: 305]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else if (responser.body == "200") {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Done!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("#HashTag has been updated."),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => HashTagPage()),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+      );
+    } else {
+      (context as Element).reassemble();
+      showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: new Text("Error!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Cause unknown.Please,try again." +
+                    responser.body.toString()),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
       );
     }
@@ -140,14 +309,39 @@ class _AddHashTagState extends State<AddHashTag> {
     return "Success";
   }
 
+  int id;
+  var hashType;
+  var hashTitle;
+  var hashCol;
+
+  Color _col = Colors.black54;
+  _AddHashTagState(this.id, this.hashType, this.hashTitle, this.hashCol);
+
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWeight = MediaQuery.of(context).size.width;
-    //print(HashTagPage.hashType);
-    print(HashTagPage.currentInfo);
-    title.text = HashTagPage.currentInfo;
-    //var token = LoginPage.token;
+
+    if (hashType == "edit") {
+      //title.text = hashTitle;
+
+      if (hashCol == "info") {
+        _col = Colors.lightBlue;
+      } else if (hashCol == "danger") {
+        _col = Colors.red;
+      } else if (hashCol == "success") {
+        _col = Colors.green;
+      } else if (hashCol == "warning") {
+        _col = Colors.yellow;
+      } else if (hashCol == "secondary") {
+        _col = Colors.grey;
+      } else if (hashCol == "dark") {
+        _col = Colors.black;
+      } else {
+        _col = Colors.blue;
+      }
+    }
+
     return Scaffold(
       backgroundColor: Color(0xFF73AEF5),
       appBar: AppBar(
@@ -201,7 +395,8 @@ class _AddHashTagState extends State<AddHashTag> {
                       ),
                       backgroundColor: Colors.transparent,
                     ),
-                    labelText: "Title",
+                    labelText: hashTitle,
+                    hintText: hashTitle,
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.black38),
                     ),
@@ -217,14 +412,16 @@ class _AddHashTagState extends State<AddHashTag> {
                       child: CircleAvatar(
                         child: FaIcon(
                           FontAwesomeIcons.palette,
-                          color: Colors.black54,
+                          color: _col,
                           size: 30,
                         ),
                         backgroundColor: Colors.transparent,
                       ),
                     ),
                     Container(
-                      child: MyColorWidget(),
+                      child: MyColorWidget(
+                        hashCol: hashCol,
+                      ),
                     ),
                   ],
                 ),
@@ -234,13 +431,51 @@ class _AddHashTagState extends State<AddHashTag> {
                 child: RaisedButton.icon(
                   //Update Password
                   onPressed: () {
-                    this.addRef(title.text, _MyColorWidgetState.newData);
+                    if (hashType == "add") {
+                      if (title.text.length <= 0) {
+                        showDialog(
+                          context: context,
+                          child: new AlertDialog(
+                            title: new Text("Emplty Flex"),
+                            content: new Stack(
+                              children: <Widget>[
+                                Container(
+                                  child:
+                                      Text("#HashTag Title can not be empty!"),
+                                )
+                              ],
+                            ),
+                            actions: <Widget>[
+                              RaisedButton(
+                                onPressed: () {
+                                  Navigator.of(context, rootNavigator: true)
+                                      .pop('dialog');
+                                },
+                                child: Text("ok"),
+                              ),
+                            ],
+                          ),
+                        );
+                      } else {
+                        this.addHash(
+                            title.text, _MyColorWidgetState.dropdownValue);
+                      }
+                    } else {
+                      if (title.text.length <= 0) {
+                        title.text = hashTitle;
+                        this.putHash(
+                            id, title.text, _MyColorWidgetState.dropdownValue);
+                      } else {
+                        this.putHash(
+                            id, title.text, _MyColorWidgetState.dropdownValue);
+                      }
+                    }
                   },
 
                   icon: FaIcon(
-                    HashTagPage.hashType == "add"
+                    hashType == "add"
                         ? FontAwesomeIcons.plusCircle
-                        : HashTagPage.hashType == "edit"
+                        : hashType == "edit"
                             ? FontAwesomeIcons.edit
                             : FontAwesomeIcons.upload,
                     //color: Colors.white70,
@@ -263,17 +498,52 @@ class _AddHashTagState extends State<AddHashTag> {
 
 //################COLOR####################
 class MyColorWidget extends StatefulWidget {
-  MyColorWidget({Key key}) : super(key: key);
+  var hashCol;
+  MyColorWidget({Key key, @required this.hashCol}) : super(key: key);
 
   @override
-  _MyColorWidgetState createState() => _MyColorWidgetState();
+  _MyColorWidgetState createState() => _MyColorWidgetState(hashCol);
 }
 
 class _MyColorWidgetState extends State<MyColorWidget> {
-  String dropdownValue = 'Light Blue';
-  static String newData = "Null";
+  String hashCol = "Light Blue";
+  _MyColorWidgetState(this.hashCol);
+
+  Color _col = Colors.deepPurpleAccent;
+  bool change = false;
+
+  static String dropdownValue = "Light Blue";
+  //static String newData = "Null";
+
   @override
   Widget build(BuildContext context) {
+    if (change == false) {
+      if (hashCol == "info") {
+        _col = Colors.lightBlue;
+        dropdownValue = "Light Blue";
+      } else if (hashCol == "danger") {
+        _col = Colors.red;
+        dropdownValue = "Red";
+      } else if (hashCol == "success") {
+        _col = Colors.green;
+        dropdownValue = "Green";
+      } else if (hashCol == "warning") {
+        _col = Colors.yellow;
+        dropdownValue = "Yellow";
+      } else if (hashCol == "secondary") {
+        _col = Colors.grey;
+        dropdownValue = "Grey";
+      } else if (hashCol == "dark") {
+        _col = Colors.black;
+        dropdownValue = "Black";
+      } else if (hashCol == "primary") {
+        _col = Colors.blue;
+        dropdownValue = "Blue";
+      } else {
+        _col = Colors.deepPurpleAccent;
+      }
+    }
+
     return DropdownButton<String>(
       value: dropdownValue,
       icon: Icon(Icons.arrow_downward),
@@ -282,22 +552,23 @@ class _MyColorWidgetState extends State<MyColorWidget> {
       style: TextStyle(color: Colors.black87),
       underline: Container(
         height: 2,
-        color: Colors.deepPurpleAccent,
+        color: _col,
       ),
       onChanged: (String newValue) {
         setState(() {
+          change = true;
           dropdownValue = newValue;
-          newData = newValue;
-          print(newValue + "  1");
+          //newData = newValue;
+          //print(newValue + "  1");
           print(dropdownValue);
-          print(newValue + "  2");
+          //print(newValue + "  2");
         });
       },
       items: <String>[
         'Light Blue',
         'Blue',
         'Green',
-        'Gray',
+        'Grey',
         'Black',
         'Yellow',
         'Red',
