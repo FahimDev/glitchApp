@@ -81,8 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
     var newInfo;
     showDialog(
       //barrierDismissible: false,
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Change '" + type + "' section ?"),
         content: new Stack(
           children: <Widget>[
@@ -105,32 +104,58 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
         actions: <Widget>[
-          RaisedButton(
-            onPressed: () {
-              //newInfo = newData.text;
-              newData.text = "";
-            },
-            child: Text("Make it Null"),
-            color: Colors.yellowAccent,
-          ),
-          RaisedButton(
-            onPressed: () {
-              //newInfo = newData.text;
-              this.makeChange(type);
-            },
-            child: Text("Update"),
-            color: Colors.green,
-          ),
-          RaisedButton(
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop('dialog');
-              //(context as Element).reassemble();
-            },
-            child: Text("No"),
-            color: Colors.red,
+          Row(
+            children: [
+              Container(
+                color: Colors.yellowAccent,
+                child: TextButton(
+                  onPressed: () {
+                    //newInfo = newData.text;
+                    newData.text = "";
+                  },
+                  child: Text(
+                    "Make it Null",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Container(
+                color: Colors.green,
+                child: TextButton(
+                  onPressed: () {
+                    //newInfo = newData.text;
+                    this.makeChange(type);
+                  },
+                  child: Text(
+                    "Update",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Container(
+                color: Colors.red,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop('dialog');
+                    //(context as Element).reassemble();
+                  },
+                  child: Text(
+                    "No",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
+      context: context,
     );
   }
 
@@ -209,6 +234,106 @@ class _ProfilePageState extends State<ProfilePage> {
         headers: headers);
     Navigator.of(context, rootNavigator: true).pop('dialog');
     (context as Element).reassemble();
+    if (changeInfo.body == "401") {
+      (context as Element).reassemble();
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("Something went Wrong"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Your session is over.Please,login again."),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+        context: context,
+      );
+    } else if (changeInfo.body == "304") {
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child:
+                    Text("Not Modified.Please,try again. [Status Code: 304]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+        context: context,
+      );
+    } else if (changeInfo.body == "200") {
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("Done!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Profile updated successfully."),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+        context: context,
+      );
+    } else {
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Cause unknown. Please, try again.[" +
+                    changeInfo.body +
+                    "]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+        context: context,
+      );
+    }
     print(changeInfo.body);
   }
 
@@ -241,8 +366,7 @@ class _ProfilePageState extends State<ProfilePage> {
       _image = null;
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -253,6 +377,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
         ),
+        context: context,
       );
 
       print("Try Another Image");
@@ -260,8 +385,7 @@ class _ProfilePageState extends State<ProfilePage> {
       _image = null;
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -270,14 +394,29 @@ class _ProfilePageState extends State<ProfilePage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else {
       _image = null;
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong!"),
           content: new Stack(
             children: <Widget>[
@@ -287,6 +426,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
         ),
+        context: context,
       );
     }
 
@@ -295,8 +435,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   imageUploadNoti() {
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Uploading..."),
         content: new Stack(
           children: <Widget>[
@@ -306,6 +445,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ],
         ),
       ),
+      context: context,
     );
   }
 
@@ -697,9 +837,16 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Center(child: Text("Loading...")),
+            return Center(
+              child: SizedBox(
+                height: 50,
+                width: 50,
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(
+                    Color(0xFF0D47A1),
+                  ),
+                ),
+              ),
             );
           }
         },

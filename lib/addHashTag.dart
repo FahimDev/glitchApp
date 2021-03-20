@@ -58,8 +58,7 @@ class _AddHashTagState extends State<AddHashTag> {
     if (responser.body == "401") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -68,13 +67,28 @@ class _AddHashTagState extends State<AddHashTag> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else if (responser.body == "405") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -92,12 +106,12 @@ class _AddHashTagState extends State<AddHashTag> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (responser.body == "304") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -116,12 +130,12 @@ class _AddHashTagState extends State<AddHashTag> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (responser.body == "200") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -144,12 +158,12 @@ class _AddHashTagState extends State<AddHashTag> {
             ),
           ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Error!"),
           content: new Stack(
             children: <Widget>[
@@ -169,6 +183,7 @@ class _AddHashTagState extends State<AddHashTag> {
             ),
           ],
         ),
+        context: context,
       );
     }
 
@@ -192,8 +207,7 @@ class _AddHashTagState extends State<AddHashTag> {
     if (responser.body == "401") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -202,13 +216,28 @@ class _AddHashTagState extends State<AddHashTag> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else if (responser.body == "405") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -226,12 +255,12 @@ class _AddHashTagState extends State<AddHashTag> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (responser.body == "304") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -250,12 +279,12 @@ class _AddHashTagState extends State<AddHashTag> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (responser.body == "200") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -278,12 +307,12 @@ class _AddHashTagState extends State<AddHashTag> {
             ),
           ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Error!"),
           content: new Stack(
             children: <Widget>[
@@ -303,6 +332,7 @@ class _AddHashTagState extends State<AddHashTag> {
             ),
           ],
         ),
+        context: context,
       );
     }
 
@@ -402,6 +432,11 @@ class _AddHashTagState extends State<AddHashTag> {
                     ),
                     border: OutlineInputBorder(),
                   ),
+                  onTap: () {
+                    hashType == "edit"
+                        ? title.text = hashTitle
+                        : hashTitle = "Title";
+                  },
                 ),
               ),
               Padding(
@@ -429,13 +464,11 @@ class _AddHashTagState extends State<AddHashTag> {
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                 child: RaisedButton.icon(
-                  //Update Password
                   onPressed: () {
                     if (hashType == "add") {
                       if (title.text.length <= 0) {
                         showDialog(
-                          context: context,
-                          child: new AlertDialog(
+                          builder: (context) => new AlertDialog(
                             title: new Text("Emplty Flex"),
                             content: new Stack(
                               children: <Widget>[
@@ -455,6 +488,7 @@ class _AddHashTagState extends State<AddHashTag> {
                               ),
                             ],
                           ),
+                          context: context,
                         );
                       } else {
                         this.addHash(
@@ -471,7 +505,6 @@ class _AddHashTagState extends State<AddHashTag> {
                       }
                     }
                   },
-
                   icon: FaIcon(
                     hashType == "add"
                         ? FontAwesomeIcons.plusCircle

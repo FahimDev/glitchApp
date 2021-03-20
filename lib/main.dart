@@ -71,6 +71,7 @@ class _LoginPageState extends State<LoginPage> {
         if (response == 'As-Salamu Alaykum') {
           user = userName.text;
           passwd = password.text;
+          token = data['Token'];
           print('Login Success!');
           //user = userName.text;
           Navigator.push(
@@ -105,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
     ]);
     return Scaffold(
       backgroundColor: Colors.transparent,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

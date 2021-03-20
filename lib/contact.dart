@@ -47,8 +47,7 @@ class _ContactsPageState extends State<ContactsPage> {
     var currentInfo = current;
     newData.text = currentInfo;
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Change '" + lable + "' section ?"),
         content: new Stack(
           children: <Widget>[
@@ -102,6 +101,7 @@ class _ContactsPageState extends State<ContactsPage> {
           ),
         ],
       ),
+      context: context,
     );
   }
 
@@ -109,8 +109,7 @@ class _ContactsPageState extends State<ContactsPage> {
     Navigator.of(context, rootNavigator: true).pop('dialog');
     //(context as Element).reassemble();
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Updating..."),
         content: new Stack(
           children: <Widget>[
@@ -120,6 +119,7 @@ class _ContactsPageState extends State<ContactsPage> {
           ],
         ),
       ),
+      context: context,
     );
   }
 
@@ -148,11 +148,10 @@ class _ContactsPageState extends State<ContactsPage> {
         */
     Navigator.of(context, rootNavigator: true).pop('dialog');
     (context as Element).reassemble();
-    if (changeInfo.body == "Invalid Token !") {
+    if (changeInfo.body == "401") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -161,32 +160,33 @@ class _ContactsPageState extends State<ContactsPage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
-      );
-    } else if (changeInfo.body == "Unauthorized.") {
-      showDialog(
         context: context,
-        child: new AlertDialog(
-          title: new Text("Something went Wrong"),
+      );
+    } else if (changeInfo.body == "304") {
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
               Container(
-                child: Text("Authorization ERROR.Please,login again."),
-              )
-            ],
-          ),
-        ),
-      );
-    } else {
-      (context as Element).reassemble();
-      showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: new Text("Done!"),
-          content: new Stack(
-            children: <Widget>[
-              Container(
-                child: Text("Your contact information has been updated."),
+                child:
+                    Text("Not Modified.Please,try again. [Status Code: 304]"),
               )
             ],
           ),
@@ -194,15 +194,61 @@ class _ContactsPageState extends State<ContactsPage> {
             RaisedButton(
               onPressed: () {
                 Navigator.of(context, rootNavigator: true).pop('dialog');
-                //(context as Element).reassemble();
               },
               child: Text("ok"),
             ),
           ],
         ),
+        context: context,
+      );
+    } else if (changeInfo.body == "200") {
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("Done!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Contact updated successfully."),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+        context: context,
+      );
+    } else {
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Cause unknown. Please, try again.[" +
+                    changeInfo.body +
+                    "]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+        context: context,
       );
     }
-    print(changeInfo.body);
+    print(changeInfo.body + "<--------------------");
   }
 
   var userName = LoginPage.user;
@@ -216,7 +262,7 @@ class _ContactsPageState extends State<ContactsPage> {
     var screenWeight = MediaQuery.of(context).size.width;
     //var token = LoginPage.token;
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Color(0xFF1976D2),
           title: Text(
@@ -346,7 +392,17 @@ class _ContactsPageState extends State<ContactsPage> {
                 ),
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text("loading ...");
+              return Center(
+                child: SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: CircularProgressIndicator(
+                    valueColor: new AlwaysStoppedAnimation<Color>(
+                      Color(0xFF0D47A1),
+                    ),
+                  ),
+                ),
+              );
             }
           },
         ));

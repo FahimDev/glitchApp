@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:glitchApp/main.dart';
+import 'package:glitchApp/work.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -68,8 +69,7 @@ class _AddWorkState extends State<AddWork> {
     if (responser.body == "401") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -78,13 +78,28 @@ class _AddWorkState extends State<AddWork> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else if (responser.body == "405") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -102,12 +117,12 @@ class _AddWorkState extends State<AddWork> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (responser.body == "304") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -126,12 +141,12 @@ class _AddWorkState extends State<AddWork> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (responser.body == "200") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -144,19 +159,23 @@ class _AddWorkState extends State<AddWork> {
             RaisedButton(
               onPressed: () {
                 Navigator.of(context, rootNavigator: true).pop('dialog');
-                (context as Element).reassemble();
-                Navigator.of(context, rootNavigator: true).pop('dialog');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WorkStatusPage(),
+                  ),
+                );
               },
               child: Text("ok"),
             ),
           ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Error!"),
           content: new Stack(
             children: <Widget>[
@@ -176,6 +195,7 @@ class _AddWorkState extends State<AddWork> {
             ),
           ],
         ),
+        context: context,
       );
     }
 
@@ -186,8 +206,7 @@ class _AddWorkState extends State<AddWork> {
     //title.text/name.text/position.text/start.text/end.text
     if (title.text.length == 0) {
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Empty Flask"),
           content: new Stack(
             children: <Widget>[
@@ -198,11 +217,11 @@ class _AddWorkState extends State<AddWork> {
             ],
           ),
         ),
+        context: context,
       );
     } else if (name.text.length == 0) {
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Empty Flask"),
           content: new Stack(
             children: <Widget>[
@@ -213,11 +232,11 @@ class _AddWorkState extends State<AddWork> {
             ],
           ),
         ),
+        context: context,
       );
     } else if (position.text.length == 0) {
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Empty Flask"),
           content: new Stack(
             children: <Widget>[
@@ -228,11 +247,11 @@ class _AddWorkState extends State<AddWork> {
             ],
           ),
         ),
+        context: context,
       );
     } else if (start.text.length == 0) {
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Empty Flask"),
           content: new Stack(
             children: <Widget>[
@@ -243,6 +262,7 @@ class _AddWorkState extends State<AddWork> {
             ],
           ),
         ),
+        context: context,
       );
     } else {
       addWork();

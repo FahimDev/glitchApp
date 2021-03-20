@@ -57,8 +57,7 @@ class _ReferencePageState extends State<ReferencePage> {
   showHideWindow(String title, String name, String position, String contact,
       String eMAil, String url, var currState) {
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Show/Hide Reference"),
         content: new Stack(
           children: <Widget>[
@@ -89,6 +88,7 @@ class _ReferencePageState extends State<ReferencePage> {
           ),
         ],
       ),
+      context: context,
     );
   }
 
@@ -96,8 +96,7 @@ class _ReferencePageState extends State<ReferencePage> {
       String eMAil, String url, String changeKey, var currentInfo) {
     newData.text = currentInfo;
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Change reference info ?"),
         content: new Stack(
           children: <Widget>[
@@ -142,14 +141,14 @@ class _ReferencePageState extends State<ReferencePage> {
           ),
         ],
       ),
+      context: context,
     );
   }
 
   confirmDelete(String title, String name, String position, String contact,
       String eMAil, String url) {
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Delete"),
         content: new Stack(
           children: <Widget>[
@@ -175,6 +174,7 @@ class _ReferencePageState extends State<ReferencePage> {
           ),
         ],
       ),
+      context: context,
     );
   }
 
@@ -210,8 +210,7 @@ class _ReferencePageState extends State<ReferencePage> {
     if (changeInfo.body == "Invalid Token !") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -220,13 +219,28 @@ class _ReferencePageState extends State<ReferencePage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "success") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -244,12 +258,12 @@ class _ReferencePageState extends State<ReferencePage> {
             ),
           ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -259,6 +273,7 @@ class _ReferencePageState extends State<ReferencePage> {
             ],
           ),
         ),
+        context: context,
       );
     }
     print(changeInfo.body);
@@ -300,8 +315,7 @@ class _ReferencePageState extends State<ReferencePage> {
     if (changeInfo.body == "Invalid Token !") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -310,13 +324,28 @@ class _ReferencePageState extends State<ReferencePage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "success") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -334,12 +363,12 @@ class _ReferencePageState extends State<ReferencePage> {
             ),
           ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -349,6 +378,7 @@ class _ReferencePageState extends State<ReferencePage> {
             ],
           ),
         ),
+        context: context,
       );
     }
     print(changeInfo.body);
@@ -379,8 +409,7 @@ class _ReferencePageState extends State<ReferencePage> {
     if (changeInfo.body == "Invalid Token !") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -389,13 +418,28 @@ class _ReferencePageState extends State<ReferencePage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -413,6 +457,7 @@ class _ReferencePageState extends State<ReferencePage> {
             ),
           ],
         ),
+        context: context,
       );
     }
     print(changeInfo.body);
@@ -425,7 +470,7 @@ class _ReferencePageState extends State<ReferencePage> {
     //var token = LoginPage.token;
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Color(0xFF0D47A1),
         title: Text(
@@ -760,7 +805,17 @@ class _ReferencePageState extends State<ReferencePage> {
               },
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("loading ...");
+            return Center(
+              child: SizedBox(
+                height: 50,
+                width: 50,
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(
+                    Color(0xFF0D47A1),
+                  ),
+                ),
+              ),
+            );
           }
         },
       ),

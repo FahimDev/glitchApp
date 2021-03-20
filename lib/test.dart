@@ -44,16 +44,21 @@ class TestME extends StatelessWidget {
         headers: headers);
 
     print(changeInfo.body);
-    if (changeInfo.body == "Invalid Token !") {
+    if (changeInfo.body == "401") {
       returnPage = "Your session is over.Please,login again.";
-      showDial == true;
-    } else if (changeInfo.body == "Update fail") {
+      showDial = true;
+    } else if (changeInfo.body == "304") {
       returnPage = "An error occurred.Please,try again.";
-      showDial == true;
+      showDial = true;
+    } else if (changeInfo.body == "200") {
+      returnPage = "200";
+      showDial = false;
     } else {
-      returnPage = "success";
-      showDial == false;
+      returnPage = "Error unknown.";
+      showDial = true;
     }
+
+    return returnPage;
   }
 
   @override
@@ -160,7 +165,7 @@ class TestME extends StatelessWidget {
                       width: 20,
                     ),
                     RaisedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         var newValue;
                         var changeType;
 
@@ -175,16 +180,16 @@ class TestME extends StatelessWidget {
                           changeType = "blood";
                         }
 
-                        makeChange(changeType, newValue);
-                        process() {
-                          returnPage == "success"
-                              ? Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => ProfilePage()),
-                                )
-                              : (context as Element).reassemble();
-                        }
+                        returnPage = await makeChange(changeType, newValue);
+                        returnPage == "200"
+                            ? Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ProfilePage()),
+                              )
+                            : AlertDialog(
+                                title: Text(returnPage),
+                              );
 
                         print(newValue);
                       },

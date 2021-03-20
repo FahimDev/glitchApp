@@ -49,8 +49,7 @@ class _MyLinkPageState extends State<MyLinkPage> {
 
   confirmDelete(int id, String buttNane) {
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Delete"),
         content: new Stack(
           children: <Widget>[
@@ -78,6 +77,7 @@ class _MyLinkPageState extends State<MyLinkPage> {
           ),
         ],
       ),
+      context: context,
     );
   }
 
@@ -92,8 +92,7 @@ class _MyLinkPageState extends State<MyLinkPage> {
     if (changeInfo.body == "401") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -102,13 +101,28 @@ class _MyLinkPageState extends State<MyLinkPage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "405") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -126,12 +140,12 @@ class _MyLinkPageState extends State<MyLinkPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "304") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -150,12 +164,12 @@ class _MyLinkPageState extends State<MyLinkPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "200") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -173,12 +187,12 @@ class _MyLinkPageState extends State<MyLinkPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Error!"),
           content: new Stack(
             children: <Widget>[
@@ -197,6 +211,7 @@ class _MyLinkPageState extends State<MyLinkPage> {
             ),
           ],
         ),
+        context: context,
       );
     }
     print(changeInfo.body);
@@ -222,8 +237,7 @@ class _MyLinkPageState extends State<MyLinkPage> {
     if (changeInfo.body == "401") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -232,13 +246,28 @@ class _MyLinkPageState extends State<MyLinkPage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "405") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -256,12 +285,12 @@ class _MyLinkPageState extends State<MyLinkPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "304") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -280,12 +309,12 @@ class _MyLinkPageState extends State<MyLinkPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "200") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -303,12 +332,12 @@ class _MyLinkPageState extends State<MyLinkPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Error!"),
           content: new Stack(
             children: <Widget>[
@@ -328,6 +357,7 @@ class _MyLinkPageState extends State<MyLinkPage> {
             ),
           ],
         ),
+        context: context,
       );
     }
     print(changeInfo.body);
@@ -349,8 +379,7 @@ class _MyLinkPageState extends State<MyLinkPage> {
     if (changeInfo.body == "401") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -359,13 +388,28 @@ class _MyLinkPageState extends State<MyLinkPage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "405") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -383,12 +427,12 @@ class _MyLinkPageState extends State<MyLinkPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "304") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -407,12 +451,12 @@ class _MyLinkPageState extends State<MyLinkPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "200") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -430,12 +474,12 @@ class _MyLinkPageState extends State<MyLinkPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Error!"),
           content: new Stack(
             children: <Widget>[
@@ -454,6 +498,7 @@ class _MyLinkPageState extends State<MyLinkPage> {
             ),
           ],
         ),
+        context: context,
       );
     }
     print(changeInfo.body);
@@ -466,7 +511,7 @@ class _MyLinkPageState extends State<MyLinkPage> {
     //var token = LoginPage.token;
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Color(0xFF0D47A1),
         title: Text(
@@ -575,7 +620,16 @@ class _MyLinkPageState extends State<MyLinkPage> {
               },
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("loading ...");
+            return Center(
+              child: SizedBox(
+                height: 200,
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(
+                    Color(0xFF0D47A1),
+                  ),
+                ),
+              ),
+            );
           }
         },
       ),
@@ -660,8 +714,7 @@ class _MyDialogState extends State<MyDialog> {
     if (changeInfo.body == "401") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -671,12 +724,12 @@ class _MyDialogState extends State<MyDialog> {
             ],
           ),
         ),
+        context: context,
       );
     } else if (changeInfo.body == "405") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -694,12 +747,12 @@ class _MyDialogState extends State<MyDialog> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "304") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -718,12 +771,12 @@ class _MyDialogState extends State<MyDialog> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "200") {
       //(context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -741,12 +794,12 @@ class _MyDialogState extends State<MyDialog> {
             ),
           ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Error!"),
           content: new Stack(
             children: <Widget>[
@@ -765,6 +818,7 @@ class _MyDialogState extends State<MyDialog> {
             ),
           ],
         ),
+        context: context,
       );
     }
     print("THE RESPONSE ---->" + changeInfo.body);
@@ -797,8 +851,7 @@ class _MyDialogState extends State<MyDialog> {
     if (changeInfo.body == "401") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -808,12 +861,12 @@ class _MyDialogState extends State<MyDialog> {
             ],
           ),
         ),
+        context: context,
       );
     } else if (changeInfo.body == "405") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -831,12 +884,12 @@ class _MyDialogState extends State<MyDialog> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "304") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -855,12 +908,12 @@ class _MyDialogState extends State<MyDialog> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "200") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -878,12 +931,12 @@ class _MyDialogState extends State<MyDialog> {
             ),
           ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Error!"),
           content: new Stack(
             children: <Widget>[
@@ -903,6 +956,7 @@ class _MyDialogState extends State<MyDialog> {
             ),
           ],
         ),
+        context: context,
       );
     }
     print(changeInfo.body);
@@ -958,8 +1012,7 @@ class _MyDialogState extends State<MyDialog> {
               if (next == false) {
                 if (titleData.text.length <= 0) {
                   showDialog(
-                    context: context,
-                    child: new AlertDialog(
+                    builder: (context) => new AlertDialog(
                       title: new Text("Emplty Flex"),
                       content: new Stack(
                         children: <Widget>[
@@ -978,6 +1031,7 @@ class _MyDialogState extends State<MyDialog> {
                         ),
                       ],
                     ),
+                    context: context,
                   );
                 } else {
                   newTitle = titleData.text;
@@ -988,8 +1042,7 @@ class _MyDialogState extends State<MyDialog> {
               } else {
                 if (urlData.text.length <= 0) {
                   showDialog(
-                    context: context,
-                    child: new AlertDialog(
+                    builder: (context) => new AlertDialog(
                       title: new Text("Emplty Flex"),
                       content: new Stack(
                         children: <Widget>[
@@ -1008,6 +1061,7 @@ class _MyDialogState extends State<MyDialog> {
                         ),
                       ],
                     ),
+                    context: context,
                   );
                 } else {
                   print(titleData.text + urlData.text);

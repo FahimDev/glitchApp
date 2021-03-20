@@ -59,8 +59,7 @@ class _changePasswordState extends State<changePassword> {
     if (responser.body == "Invalid Token !") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -70,11 +69,11 @@ class _changePasswordState extends State<changePassword> {
             ],
           ),
         ),
+        context: context,
       );
     } else if (responser.body == "Unauthorized.") {
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -84,11 +83,11 @@ class _changePasswordState extends State<changePassword> {
             ],
           ),
         ),
+        context: context,
       );
     } else if (responser.body == "Wrong Password !") {
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -98,11 +97,11 @@ class _changePasswordState extends State<changePassword> {
             ],
           ),
         ),
+        context: context,
       );
     } else if (responser.body == "Update fail") {
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong!"),
           content: new Stack(
             children: <Widget>[
@@ -112,11 +111,11 @@ class _changePasswordState extends State<changePassword> {
             ],
           ),
         ),
+        context: context,
       );
     } else {
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -130,11 +129,18 @@ class _changePasswordState extends State<changePassword> {
               onPressed: () {
                 Navigator.of(context, rootNavigator: true).pop('dialog');
                 (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
               },
               child: Text("ok"),
             ),
           ],
         ),
+        context: context,
       );
       //passwd = newPasswd.text;
     }
@@ -250,8 +256,7 @@ class _changePasswordState extends State<changePassword> {
                   onPressed: () {
                     if (newPasswd.text.length < 5) {
                       showDialog(
-                        context: context,
-                        child: new AlertDialog(
+                        builder: (context) => new AlertDialog(
                           title: new Text("Too Short!"),
                           content: new Stack(
                             children: <Widget>[
@@ -271,11 +276,11 @@ class _changePasswordState extends State<changePassword> {
                             ),
                           ],
                         ),
+                        context: context,
                       );
                     } else if (oldpasswd.text != passwd) {
                       showDialog(
-                        context: context,
-                        child: new AlertDialog(
+                        builder: (context) => new AlertDialog(
                           title: new Text("Error!"),
                           content: new Stack(
                             children: <Widget>[
@@ -295,11 +300,11 @@ class _changePasswordState extends State<changePassword> {
                             ),
                           ],
                         ),
+                        context: context,
                       );
                     } else if (newPasswd.text == passwd) {
                       showDialog(
-                        context: context,
-                        child: new AlertDialog(
+                        builder: (context) => new AlertDialog(
                           title: new Text("Error!"),
                           content: new Stack(
                             children: <Widget>[
@@ -319,6 +324,7 @@ class _changePasswordState extends State<changePassword> {
                             ),
                           ],
                         ),
+                        context: context,
                       );
                     } else {
                       this.updatePasswd();

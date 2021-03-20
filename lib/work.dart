@@ -61,8 +61,7 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
       String title, String name, int id, String changeKey, String currentInfo) {
     newData.text = currentInfo;
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Change reference info ?"),
         content: new Stack(
           children: <Widget>[
@@ -129,13 +128,13 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
           ),
         ],
       ),
+      context: context,
     );
   }
 
   confirmDelete(String title, String name, int id) {
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Delete"),
         content: new Stack(
           children: <Widget>[
@@ -161,6 +160,7 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
           ),
         ],
       ),
+      context: context,
     );
   }
 
@@ -187,8 +187,7 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
     if (changeInfo.body == "401") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -197,13 +196,28 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "405") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -221,12 +235,12 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "304") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -245,12 +259,12 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "200") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -272,12 +286,12 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Error!"),
           content: new Stack(
             children: <Widget>[
@@ -297,6 +311,7 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
             ),
           ],
         ),
+        context: context,
       );
     }
     print(changeInfo.body);
@@ -319,8 +334,7 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
     if (changeInfo.body == "401") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -329,13 +343,28 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "405") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -353,12 +382,12 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "304") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -377,12 +406,12 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "200") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -400,12 +429,12 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Error!"),
           content: new Stack(
             children: <Widget>[
@@ -425,6 +454,7 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
             ),
           ],
         ),
+        context: context,
       );
     }
     print(changeInfo.body);
@@ -438,7 +468,7 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
     //var token = LoginPage.token;
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Color(0xFF0D47A1),
         title: Text(
@@ -651,7 +681,16 @@ class _WorkStatusPageState extends State<WorkStatusPage> {
               },
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("loading ...");
+            return Center(
+              child: SizedBox(
+                height: 200,
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(
+                    Color(0xFF0D47A1),
+                  ),
+                ),
+              ),
+            );
           }
         },
       ),

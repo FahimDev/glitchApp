@@ -47,8 +47,7 @@ class _SocialPageState extends State<SocialPage> {
     var currentInfo = current;
     newData.text = currentInfo;
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Change '" + lable + "' URL ?"),
         content: new Stack(
           children: <Widget>[
@@ -66,32 +65,59 @@ class _SocialPageState extends State<SocialPage> {
           ],
         ),
         actions: <Widget>[
-          RaisedButton(
-            onPressed: () {
-              //newInfo = newData.text;
-              newData.text = "";
-            },
-            child: Text("Make it Null"),
-            color: Colors.yellowAccent,
-          ),
-          RaisedButton(
-            onPressed: () {
-              infoNoti();
-              this.commitChange(type);
-            },
-            child: Text("Update"),
-            color: Colors.green,
-          ),
-          RaisedButton(
-            onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop('dialog');
-              //(context as Element).reassemble();
-            },
-            child: Text("No"),
-            color: Colors.red,
+          Row(
+            children: [
+              Container(
+                color: Colors.yellowAccent,
+                child: TextButton(
+                  onPressed: () {
+                    //newInfo = newData.text;
+                    newData.text = "";
+                  },
+                  child: Text(
+                    "Make it Null",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  //color: Colors.yellowAccent,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Container(
+                color: Colors.green,
+                child: TextButton(
+                  onPressed: () {
+                    infoNoti();
+                    this.commitChange(type);
+                  },
+                  child: Text(
+                    "Update",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Container(
+                color: Colors.red,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop('dialog');
+                    //(context as Element).reassemble();
+                  },
+                  child: Text(
+                    "No",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
+      context: context,
     );
   }
 
@@ -99,8 +125,7 @@ class _SocialPageState extends State<SocialPage> {
     Navigator.of(context, rootNavigator: true).pop('dialog');
     //(context as Element).reassemble();
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Updating..."),
         content: new Stack(
           children: <Widget>[
@@ -110,6 +135,7 @@ class _SocialPageState extends State<SocialPage> {
           ],
         ),
       ),
+      context: context,
     );
   }
 
@@ -141,8 +167,7 @@ class _SocialPageState extends State<SocialPage> {
     if (changeInfo.body == "Invalid Token !") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -151,13 +176,28 @@ class _SocialPageState extends State<SocialPage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -176,6 +216,7 @@ class _SocialPageState extends State<SocialPage> {
             ),
           ],
         ),
+        context: context,
       );
     }
     print(changeInfo.body);
@@ -192,7 +233,7 @@ class _SocialPageState extends State<SocialPage> {
     var screenWeight = MediaQuery.of(context).size.width;
     //var token = LoginPage.token;
     return Scaffold(
-        resizeToAvoidBottomPadding: false,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: Color(0xFF1976D2),
           title: Text(
@@ -442,7 +483,17 @@ class _SocialPageState extends State<SocialPage> {
                 ),
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text("loading ...");
+              return Center(
+                child: SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: CircularProgressIndicator(
+                    valueColor: new AlwaysStoppedAnimation<Color>(
+                      Color(0xFF0D47A1),
+                    ),
+                  ),
+                ),
+              );
             }
           },
         ));

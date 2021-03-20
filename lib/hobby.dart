@@ -52,8 +52,7 @@ class _HobbyPageState extends State<HobbyPage> {
   TextEditingController newData = new TextEditingController();
   addHobbyWindow() {
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Do you want to add new Hobby ?"),
         content: new Stack(
           children: <Widget>[
@@ -95,14 +94,14 @@ class _HobbyPageState extends State<HobbyPage> {
           ),
         ],
       ),
+      context: context,
     );
   }
 
   editHobbyWindow(int id, var currentInfo) {
     newData.text = currentInfo;
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Change your Hobby-List ?"),
         content: new Stack(
           children: <Widget>[
@@ -144,13 +143,13 @@ class _HobbyPageState extends State<HobbyPage> {
           ),
         ],
       ),
+      context: context,
     );
   }
 
   confirmDelete(int id, String hobbyName) {
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Delete"),
         content: new Stack(
           children: <Widget>[
@@ -178,6 +177,7 @@ class _HobbyPageState extends State<HobbyPage> {
           ),
         ],
       ),
+      context: context,
     );
   }
 
@@ -188,11 +188,10 @@ class _HobbyPageState extends State<HobbyPage> {
         headers: headers);
     Navigator.of(context, rootNavigator: true).pop('dialog');
     (context as Element).reassemble();
-    if (changeInfo.body == "Invalid Token !") {
+    if (changeInfo.body == "401") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -201,18 +200,33 @@ class _HobbyPageState extends State<HobbyPage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
-    } else if (changeInfo.body == "success") {
+    } else if (changeInfo.body == "405") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: new Text("Done!"),
+        builder: (context) => new AlertDialog(
+          title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
               Container(
-                child: Text("Point has been added."),
+                child: Text("Request Method Unknown. [Status Code: 405]"),
               )
             ],
           ),
@@ -225,21 +239,79 @@ class _HobbyPageState extends State<HobbyPage> {
             ),
           ],
         ),
+        context: context,
+      );
+    } else if (changeInfo.body == "304") {
+      (context as Element).reassemble();
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child:
+                    Text("Not Modified.Please,try again. [Status Code: 305]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+        context: context,
+      );
+    } else if (changeInfo.body == "200") {
+      (context as Element).reassemble();
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("Done!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("A new hobby has been added."),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                newData.text = "";
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: new Text("Something went Wrong"),
+        builder: (context) => new AlertDialog(
+          title: new Text("Error!"),
           content: new Stack(
             children: <Widget>[
               Container(
-                child: Text("An error occurred.Please,try again."),
+                child: Text("Cause unknown.Please,try again." +
+                    changeInfo.body.toString()),
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     }
     print(changeInfo.body);
@@ -263,8 +335,7 @@ class _HobbyPageState extends State<HobbyPage> {
     if (changeInfo.body == "401") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -273,13 +344,28 @@ class _HobbyPageState extends State<HobbyPage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "405") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -297,12 +383,12 @@ class _HobbyPageState extends State<HobbyPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "304") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -321,12 +407,12 @@ class _HobbyPageState extends State<HobbyPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "200") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -339,17 +425,18 @@ class _HobbyPageState extends State<HobbyPage> {
             RaisedButton(
               onPressed: () {
                 Navigator.of(context, rootNavigator: true).pop('dialog');
+                newData.text = "";
               },
               child: Text("ok"),
             ),
           ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Error!"),
           content: new Stack(
             children: <Widget>[
@@ -368,6 +455,7 @@ class _HobbyPageState extends State<HobbyPage> {
             ),
           ],
         ),
+        context: context,
       );
     }
     print(changeInfo.body);
@@ -389,8 +477,7 @@ class _HobbyPageState extends State<HobbyPage> {
     if (changeInfo.body == "401") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -399,13 +486,28 @@ class _HobbyPageState extends State<HobbyPage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "405") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -423,12 +525,12 @@ class _HobbyPageState extends State<HobbyPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "304") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("ERROR!"),
           content: new Stack(
             children: <Widget>[
@@ -447,12 +549,12 @@ class _HobbyPageState extends State<HobbyPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else if (changeInfo.body == "200") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -470,12 +572,12 @@ class _HobbyPageState extends State<HobbyPage> {
             ),
           ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Error!"),
           content: new Stack(
             children: <Widget>[
@@ -494,6 +596,7 @@ class _HobbyPageState extends State<HobbyPage> {
             ),
           ],
         ),
+        context: context,
       );
     }
     print(changeInfo.body);
@@ -506,7 +609,7 @@ class _HobbyPageState extends State<HobbyPage> {
     //var token = LoginPage.token;
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Color(0xFF0D47A1),
         title: Text(
@@ -583,7 +686,16 @@ class _HobbyPageState extends State<HobbyPage> {
               },
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("loading ...");
+            return Center(
+              child: SizedBox(
+                height: 200,
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(
+                    Color(0xFF0D47A1),
+                  ),
+                ),
+              ),
+            );
           }
         },
       ),

@@ -57,8 +57,7 @@ class _HashTagPageState extends State<HashTagPage> {
 
   confirmDelete(String moveHashTag, String colHashTag, int idHashTag) {
     showDialog(
-      context: context,
-      child: new AlertDialog(
+      builder: (context) => new AlertDialog(
         title: new Text("Delete"),
         content: new Stack(
           children: <Widget>[
@@ -86,6 +85,7 @@ class _HashTagPageState extends State<HashTagPage> {
           ),
         ],
       ),
+      context: context,
     );
   }
 
@@ -108,8 +108,7 @@ class _HashTagPageState extends State<HashTagPage> {
     if (changeInfo.body == "Invalid Token !") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -118,13 +117,28 @@ class _HashTagPageState extends State<HashTagPage> {
               )
             ],
           ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
         ),
+        context: context,
       );
     } else {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -142,6 +156,7 @@ class _HashTagPageState extends State<HashTagPage> {
             ),
           ],
         ),
+        context: context,
       );
     }
     print(changeInfo.body);
@@ -154,7 +169,7 @@ class _HashTagPageState extends State<HashTagPage> {
     //var token = LoginPage.token;
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Color(0xFF0D47A1),
         title: Text(
@@ -284,7 +299,16 @@ class _HashTagPageState extends State<HashTagPage> {
               },
             );
           } else if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("loading ...");
+            return Center(
+              child: SizedBox(
+                height: 200,
+                child: CircularProgressIndicator(
+                  valueColor: new AlwaysStoppedAnimation<Color>(
+                    Color(0xFF0D47A1),
+                  ),
+                ),
+              ),
+            );
           }
         },
       ),

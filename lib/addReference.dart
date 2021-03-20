@@ -68,8 +68,7 @@ class _AddRefState extends State<AddRef> {
     if (responser.body == "Invalid Token !") {
       (context as Element).reassemble();
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -79,11 +78,11 @@ class _AddRefState extends State<AddRef> {
             ],
           ),
         ),
+        context: context,
       );
     } else if (responser.body == "Unauthorized.") {
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -93,11 +92,11 @@ class _AddRefState extends State<AddRef> {
             ],
           ),
         ),
+        context: context,
       );
     } else if (responser.body == "Wrong Password !") {
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong"),
           content: new Stack(
             children: <Widget>[
@@ -107,11 +106,11 @@ class _AddRefState extends State<AddRef> {
             ],
           ),
         ),
+        context: context,
       );
     } else if (responser.body == "Update fail") {
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Something went Wrong!"),
           content: new Stack(
             children: <Widget>[
@@ -121,11 +120,11 @@ class _AddRefState extends State<AddRef> {
             ],
           ),
         ),
+        context: context,
       );
     } else if (responser.body == "success") {
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Done!"),
           content: new Stack(
             children: <Widget>[
@@ -144,11 +143,11 @@ class _AddRefState extends State<AddRef> {
             ),
           ],
         ),
+        context: context,
       );
     } else {
       showDialog(
-        context: context,
-        child: new AlertDialog(
+        builder: (context) => new AlertDialog(
           title: new Text("Unknown Error!"),
           content: new Stack(
             children: <Widget>[
@@ -158,6 +157,7 @@ class _AddRefState extends State<AddRef> {
             ],
           ),
         ),
+        context: context,
       );
     }
 
