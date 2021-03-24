@@ -11,7 +11,8 @@ class WebViewExample extends StatefulWidget {
 class _WebViewExampleState extends State<WebViewExample> {
   TextEditingController controller = TextEditingController();
   FlutterWebviewPlugin flutterWebviewPlugin = FlutterWebviewPlugin();
-  var urlString = "https://www.office.app-service.glitch-innovations.com/";
+  var urlString =
+      "https://www.office.app-service.glitch-innovations.com/pwa-log-fame";
 
   launchUrl() {
     setState(() {

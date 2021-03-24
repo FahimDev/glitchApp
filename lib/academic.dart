@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:glitchApp/addEdu.dart';
 import 'package:glitchApp/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -38,24 +39,301 @@ class _AcademicPageState extends State<AcademicPage> {
     //_listView();
   }
 
-  /**
-   * This is an important note. in here I have tested how to get elements from json array.
-   * but now we need to develop the dynamic profile page &
-   * than we have to fix this page. because for response delay this page is showing error
-   */
-/*
-  @override
-  void initState() {
-    this.getProfile();
-    super.initState();
-  }
-*/
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWeight = MediaQuery.of(context).size.width;
-    //var token = LoginPage.token;
+
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        backgroundColor: Color(0xFF1976D2),
+        title: Text(
+          "Education",
+          style: TextStyle(fontFamily: 'Raleway', color: Colors.white),
+        ),
+      ),
+      backgroundColor: Colors.lightBlueAccent,
+      body: Column(
+        children: [
+          SizedBox(
+            height: 50,
+          ),
+          Container(
+            child: Card(
+              elevation: 2,
+              child: ClipPath(
+                child: Container(
+                  height: 50,
+                  width: screenWeight,
+                  child: ListTile(
+                    title: Text(
+                      "School",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    leading: FaIcon(FontAwesomeIcons.bookReader,
+                        color: Colors.white70),
+                    trailing: IconButton(
+                      icon: CircleAvatar(
+                        child: Icon(
+                          Icons.open_in_full,
+                        ),
+                        backgroundColor: Color(0xFF0D47A1),
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF0D47A1),
+                        Color(0xFF1976D2),
+                        Color(0xFF42A5F5),
+                      ],
+                    ),
+                    border: Border(
+                      right: BorderSide(color: Color(0xFF0D47A1), width: 5),
+                    ),
+                  ),
+                ),
+                clipper: ShapeBorderClipper(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3))),
+              ),
+            ),
+          ),
+          Container(
+            child: Card(
+              elevation: 2,
+              child: ClipPath(
+                child: Container(
+                  height: 50,
+                  width: screenWeight,
+                  child: ListTile(
+                    title: Text(
+                      "College",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    leading: FaIcon(FontAwesomeIcons.userGraduate,
+                        color: Colors.white70),
+                    trailing: IconButton(
+                      icon: CircleAvatar(
+                        child: Icon(
+                          Icons.open_in_full,
+                        ),
+                        backgroundColor: Color(0xFF0D47A1),
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF0D47A1),
+                        Color(0xFF1976D2),
+                        Color(0xFF42A5F5),
+                      ],
+                    ),
+                    border: Border(
+                      right: BorderSide(color: Color(0xFF0D47A1), width: 5),
+                    ),
+                  ),
+                ),
+                clipper: ShapeBorderClipper(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3))),
+              ),
+            ),
+          ),
+          Container(
+            child: Card(
+              elevation: 2,
+              child: ClipPath(
+                child: Container(
+                  height: 50,
+                  width: screenWeight,
+                  child: ListTile(
+                    title: Text(
+                      "Diploma",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    leading: FaIcon(FontAwesomeIcons.userGraduate,
+                        color: Colors.white70),
+                    trailing: IconButton(
+                      icon: CircleAvatar(
+                        child: Icon(
+                          Icons.open_in_full,
+                        ),
+                        backgroundColor: Color(0xFF0D47A1),
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF0D47A1),
+                        Color(0xFF1976D2),
+                        Color(0xFF42A5F5),
+                      ],
+                    ),
+                    border: Border(
+                      right: BorderSide(color: Color(0xFF0D47A1), width: 5),
+                    ),
+                  ),
+                ),
+                clipper: ShapeBorderClipper(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3))),
+              ),
+            ),
+          ),
+          Container(
+            child: Card(
+              elevation: 2,
+              child: ClipPath(
+                child: Container(
+                  height: 50,
+                  width: screenWeight,
+                  child: ListTile(
+                    title: Text(
+                      "Bachelor's Degree",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    leading: FaIcon(FontAwesomeIcons.graduationCap,
+                        color: Colors.white70),
+                    trailing: IconButton(
+                      icon: CircleAvatar(
+                        child: Icon(
+                          Icons.open_in_full,
+                        ),
+                        backgroundColor: Color(0xFF0D47A1),
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF0D47A1),
+                        Color(0xFF1976D2),
+                        Color(0xFF42A5F5),
+                      ],
+                    ),
+                    border: Border(
+                      right: BorderSide(color: Color(0xFF0D47A1), width: 5),
+                    ),
+                  ),
+                ),
+                clipper: ShapeBorderClipper(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3))),
+              ),
+            ),
+          ),
+          Container(
+            child: Card(
+              elevation: 2,
+              child: ClipPath(
+                child: Container(
+                  height: 50,
+                  width: screenWeight,
+                  child: ListTile(
+                    title: Text(
+                      "Master's Degree",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    leading: FaIcon(FontAwesomeIcons.university,
+                        color: Colors.white70),
+                    trailing: IconButton(
+                      icon: CircleAvatar(
+                        child: Icon(
+                          Icons.open_in_full,
+                        ),
+                        backgroundColor: Color(0xFF0D47A1),
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF0D47A1),
+                        Color(0xFF1976D2),
+                        Color(0xFF42A5F5),
+                      ],
+                    ),
+                    border: Border(
+                      right: BorderSide(color: Color(0xFF0D47A1), width: 5),
+                    ),
+                  ),
+                ),
+                clipper: ShapeBorderClipper(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3))),
+              ),
+            ),
+          ),
+          Container(
+            child: Card(
+              elevation: 2,
+              child: ClipPath(
+                child: Container(
+                  height: 50,
+                  width: screenWeight,
+                  child: ListTile(
+                    title: Text(
+                      "Doctorate Degree",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                    leading:
+                        FaIcon(FontAwesomeIcons.award, color: Colors.white70),
+                    trailing: IconButton(
+                      icon: CircleAvatar(
+                        child: Icon(
+                          Icons.open_in_full,
+                        ),
+                        backgroundColor: Color(0xFF0D47A1),
+                      ),
+                      onPressed: () {},
+                    ),
+                  ),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF0D47A1),
+                        Color(0xFF1976D2),
+                        Color(0xFF42A5F5),
+                      ],
+                    ),
+                    border: Border(
+                      right: BorderSide(color: Color(0xFF0D47A1), width: 5),
+                    ),
+                  ),
+                ),
+                clipper: ShapeBorderClipper(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(3))),
+              ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => AddEdu()));
+        },
+        child: FaIcon(FontAwesomeIcons.plusCircle),
+        backgroundColor: Color(0xFF1976D2),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
+    );
+  }
+}
+
+/*
+return Scaffold(
         backgroundColor: Colors.lightBlueAccent,
         body: FutureBuilder<String>(
           future: getProfile(), // if you mean this method well return image url
@@ -115,37 +393,6 @@ class _AcademicPageState extends State<AcademicPage> {
           },
         )
 
-        /*new ListView.builder(
-          itemCount: myElement.length == null ? 0 : myElement.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Card(
-              child: Row(
-                children: <Widget>[
-                  Text(myElement[index]
-                      ["fullName"]) //${myElement[index]["fullName"]}
-                ], //${myElement[index]["userName"]}
-              ),
-            );
-          }),
-      */
-        /*ListWheelScrollView.useDelegate(
-        itemExtent: 200,
-        //magnification: 1,
-        diameterRatio: .5,
-        //useMagnifier: true,
-        squeeze: .9,
-        renderChildrenOutsideViewport: true,
-        clipToSize: false,
-        physics: BouncingScrollPhysics(),
-        childDelegate: ListWheelChildBuilderDelegate(
-          builder: (context, index) => Container(
-            color: Colors.blueAccent,
-            child: Center(
-              child: Text("School$index"),
-            ),
-          ),
-        ),
-      ), */
+
         );
-  }
-}
+*/

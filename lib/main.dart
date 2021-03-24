@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart'; //For preventing Rotation
 import 'package:glitchApp/menu.dart';
 import 'package:http/http.dart' as http;
+import 'package:connectivity/connectivity.dart';
 
 void main() {
   runApp(MyApp());
@@ -45,6 +46,45 @@ class _LoginPageState extends State<LoginPage> {
         "Password": password.text,
       };
 
+  void login() async {
+    var status = "error";
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.mobile) {
+      status = "mobile";
+    } else if (connectivityResult == ConnectivityResult.wifi) {
+      status = "wifi";
+    } else {
+      status = "error";
+    }
+
+    if (status == "error") {
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text('No internet connection. Please, get connected.'),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+        context: context,
+      );
+    } else {
+      print(status);
+      this.getData();
+    }
+  }
+
   Future getData() async {
     var responser = await http.post(
         "http://www.office-rest.api.glitch-innovations.com/authority?userName=" +
@@ -58,11 +98,51 @@ class _LoginPageState extends State<LoginPage> {
       buttonColor1 = Colors.lightGreenAccent;
       if (responser.body == 'Shoitan!' || responser.body == "Unauthorized.") {
         print('Sorry! Wrong User-name or Password');
-        buttonColor = Colors.red;
-        buttonColor1 = Colors.redAccent;
+
+        showDialog(
+          builder: (context) => new AlertDialog(
+            title: new Text("ERROR!"),
+            content: new Stack(
+              children: <Widget>[
+                Container(
+                  child: Text('Sorry! Wrong User-name or Password'),
+                )
+              ],
+            ),
+            actions: <Widget>[
+              RaisedButton(
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop('dialog');
+                },
+                child: Text("ok"),
+              ),
+            ],
+          ),
+          context: context,
+        );
+      } else if (responser.body == 'wrongUser') {
+        showDialog(
+          builder: (context) => new AlertDialog(
+            title: new Text("ERROR!"),
+            content: new Stack(
+              children: <Widget>[
+                Container(
+                  child: Text('Sorry! Wrong User-name. Please, try again.'),
+                )
+              ],
+            ),
+            actions: <Widget>[
+              RaisedButton(
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop('dialog');
+                },
+                child: Text("ok"),
+              ),
+            ],
+          ),
+          context: context,
+        );
       } else {
-        buttonColor = Colors.green;
-        buttonColor1 = Colors.lightGreenAccent;
         var decode = json.decode(responser.body);
         data = decode;
         response = data['response'];
@@ -73,6 +153,7 @@ class _LoginPageState extends State<LoginPage> {
           passwd = password.text;
           token = data['Token'];
           print('Login Success!');
+
           //user = userName.text;
           Navigator.push(
               context,
@@ -81,10 +162,29 @@ class _LoginPageState extends State<LoginPage> {
                         accessToken: token,
                         userName: userName.text,
                       )));
-          buttonColor = Color(0xFF61A4F1);
-          buttonColor1 = Color(0xFF478DE0);
         } else {
           print('Something went wrong!');
+          showDialog(
+            builder: (context) => new AlertDialog(
+              title: new Text("ERROR!"),
+              content: new Stack(
+                children: <Widget>[
+                  Container(
+                    child: Text("Something went wrong!"),
+                  )
+                ],
+              ),
+              actions: <Widget>[
+                RaisedButton(
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop('dialog');
+                  },
+                  child: Text("ok"),
+                ),
+              ],
+            ),
+            context: context,
+          );
         }
       }
     });
@@ -251,7 +351,7 @@ class _LoginPageState extends State<LoginPage> {
                       Container(
                         child: GestureDetector(
                           onTap: () {
-                            this.getData();
+                            this.login();
                           },
                           child: Container(
                             height: 50,
