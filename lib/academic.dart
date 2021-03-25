@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:glitchApp/addEdu.dart';
 import 'package:glitchApp/main.dart';
+import 'package:glitchApp/viewEdu.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
@@ -80,7 +81,16 @@ class _AcademicPageState extends State<AcademicPage> {
                         ),
                         backgroundColor: Color(0xFF0D47A1),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewEduPage(
+                              type: "scl",
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   decoration: const BoxDecoration(
@@ -123,7 +133,16 @@ class _AcademicPageState extends State<AcademicPage> {
                         ),
                         backgroundColor: Color(0xFF0D47A1),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewEduPage(
+                              type: "clg",
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   decoration: const BoxDecoration(
@@ -166,7 +185,16 @@ class _AcademicPageState extends State<AcademicPage> {
                         ),
                         backgroundColor: Color(0xFF0D47A1),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewEduPage(
+                              type: "dip",
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   decoration: const BoxDecoration(
@@ -209,7 +237,16 @@ class _AcademicPageState extends State<AcademicPage> {
                         ),
                         backgroundColor: Color(0xFF0D47A1),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewEduPage(
+                              type: "bs",
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   decoration: const BoxDecoration(
@@ -252,7 +289,16 @@ class _AcademicPageState extends State<AcademicPage> {
                         ),
                         backgroundColor: Color(0xFF0D47A1),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewEduPage(
+                              type: "ms",
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   decoration: const BoxDecoration(
@@ -295,7 +341,16 @@ class _AcademicPageState extends State<AcademicPage> {
                         ),
                         backgroundColor: Color(0xFF0D47A1),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewEduPage(
+                              type: "phd",
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                   decoration: const BoxDecoration(
