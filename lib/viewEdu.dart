@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:glitchApp/addReference.dart';
+import 'package:glitchApp/editEdu.dart';
 import 'package:glitchApp/main.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -29,6 +30,28 @@ class _ViewEduPageState extends State<ViewEduPage> {
   var data;
 
   var formLoaderType = "phd";
+
+  List myBackup = [
+    {
+      "id": 0,
+      "school": "No Data Given",
+      "sBatch": "No Data Given",
+      "college": "No Data Given",
+      "cBatch": "No Data Given",
+      "diploma": "No Data Given",
+      "dSub": "No Data Given",
+      "dBatch": "No Data Given",
+      "bachelor": "No Data Given",
+      "baSub": "No Data Given",
+      "baBatch": "No Data Given",
+      "masters": "No Data Given",
+      "maSub": "No Data Given",
+      "msBatch": "No Data Given",
+      "phd": "No Data Given",
+      "phdSub": "No Data Given",
+      "passYear": "No Data Given"
+    }
+  ];
 
   _ViewEduPageState(this.formLoaderType);
 
@@ -81,21 +104,156 @@ class _ViewEduPageState extends State<ViewEduPage> {
     return "Success";
   }
 
-  confirmDelete(int id) {
+  Future<String> deleteEdu(int id, var title) async {
+    var changeInfo = await http.delete(
+        "" + baseURL + "update-profile-edu?id=" + id.toString(),
+        headers: headers);
+    Navigator.of(context, rootNavigator: true).pop('dialog');
+    if (changeInfo.body == "401") {
+      (context as Element).reassemble();
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("Something went Wrong"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Your session is over.Please,login again."),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+                (context as Element).reassemble();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MyApp(),
+                  ),
+                );
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+        context: context,
+      );
+    } else if (changeInfo.body == "405") {
+      (context as Element).reassemble();
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Request Method Unknown. [Status Code: 405]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+        context: context,
+      );
+    } else if (changeInfo.body == "304") {
+      (context as Element).reassemble();
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("ERROR!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child:
+                    Text("Not Modified.Please,try again. [Status Code: 305]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+        context: context,
+      );
+    } else if (changeInfo.body == "200") {
+      (context as Element).reassemble();
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("Done!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("$title has been removed."),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+        context: context,
+      );
+    } else {
+      (context as Element).reassemble();
+      showDialog(
+        builder: (context) => new AlertDialog(
+          title: new Text("Error!"),
+          content: new Stack(
+            children: <Widget>[
+              Container(
+                child: Text("Cause unknown.Please,try again. [" +
+                    changeInfo.body.toString() +
+                    "]"),
+              )
+            ],
+          ),
+          actions: <Widget>[
+            RaisedButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop('dialog');
+              },
+              child: Text("ok"),
+            ),
+          ],
+        ),
+        context: context,
+      );
+    }
+    print(changeInfo.body);
+  }
+
+  confirmDelete(int id, var title) {
     showDialog(
       builder: (context) => new AlertDialog(
         title: new Text("Delete"),
         content: new Stack(
           children: <Widget>[
             Container(
-              child: Text("Are you sure you want to remove this reference."),
+              child: Text(
+                  "Are you sure you want to remove $title from your Education list."),
             ),
           ],
         ),
         actions: <Widget>[
           RaisedButton(
             onPressed: () {
-              //this.deleteHobby(title, name, position, contact, eMAil, url);
+              this.deleteEdu(id, title);
             },
             child: Text("Delete"),
             color: Colors.red,
@@ -128,16 +286,14 @@ class _ViewEduPageState extends State<ViewEduPage> {
         ),
       ),
       body: FutureBuilder<String>(
-        future: getProfile(), // if you mean this method well return image url
+        future: getProfile(),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             return new ListView.builder(
               padding: EdgeInsets.only(top: 50),
               itemCount: myElement.length == null ? 0 : myElement.length,
               itemBuilder: (BuildContext context, int index) {
-                //myElement[index]["hobby"]
                 return Container(
-                  //padding: const EdgeInsets.only(bottom: 100.0),
                   child: Card(
                     elevation: 2,
                     child: ClipPath(
@@ -164,29 +320,52 @@ class _ViewEduPageState extends State<ViewEduPage> {
                           ),
                           subtitle: Text(
                             formLoaderType == "scl"
-                                ? myElement[index]["sBatch"]
+                                ? " [" + myElement[index]["sBatch"] + "] "
                                 : formLoaderType == "clg"
-                                    ? myElement[index]["cBatch"]
+                                    ? " [" + myElement[index]["cBatch"] + "] "
                                     : formLoaderType == "dip"
                                         ? myElement[index]["dSub"] +
-                                            myElement[index]["dBatch"]
+                                            " [" +
+                                            myElement[index]["dBatch"] +
+                                            "] "
                                         : formLoaderType == "bs"
                                             ? myElement[index]["baSub"] +
-                                                myElement[index]["baBatch"]
+                                                " [" +
+                                                myElement[index]["baBatch"] +
+                                                "] "
                                             : formLoaderType == "ms"
                                                 ? myElement[index]["maSub"] +
-                                                    myElement[index]["msBatch"]
-                                                : myElement[index]["phdSub"] +
+                                                    " [" +
                                                     myElement[index]
-                                                        ["passYear"],
+                                                        ["msBatch"] +
+                                                    "] "
+                                                : myElement[index]["phdSub"] +
+                                                    " [" +
+                                                    myElement[index]
+                                                        ["passYear"] +
+                                                    "] ",
                           ),
                           leading: IconButton(
                             icon: CircleAvatar(
-                              backgroundColor: Colors.black26,
+                              backgroundColor: Colors.red,
                               child: FaIcon(FontAwesomeIcons.minusCircle,
-                                  color: Colors.red),
+                                  color: Colors.white70),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              int id = myElement[index]["id"];
+                              var inst = formLoaderType == "scl"
+                                  ? myElement[index]["school"]
+                                  : formLoaderType == "clg"
+                                      ? myElement[index]["college"]
+                                      : formLoaderType == "dip"
+                                          ? myElement[index]["diploma"]
+                                          : formLoaderType == "bs"
+                                              ? myElement[index]["bachelor"]
+                                              : formLoaderType == "ms"
+                                                  ? myElement[index]["masters"]
+                                                  : myElement[index]["phd"];
+                              confirmDelete(id, inst);
+                            },
                           ),
                           trailing: IconButton(
                             icon: CircleAvatar(
@@ -195,7 +374,58 @@ class _ViewEduPageState extends State<ViewEduPage> {
                               ),
                               backgroundColor: Color(0xFF0D47A1),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditEdu(
+                                    id: myElement[index]["id"],
+                                    type: formLoaderType,
+                                    auth: formLoaderType == "scl"
+                                        ? myElement[index]["school"]
+                                        : formLoaderType == "clg"
+                                            ? myElement[index]["college"]
+                                            : formLoaderType == "dip"
+                                                ? myElement[index]["diploma"]
+                                                : formLoaderType == "bs"
+                                                    ? myElement[index]
+                                                        ["bachelor"]
+                                                    : formLoaderType == "ms"
+                                                        ? myElement[index]
+                                                            ["masters"]
+                                                        : myElement[index]
+                                                            ["phd"],
+                                    program: formLoaderType == "scl"
+                                        ? "school"
+                                        : formLoaderType == "clg"
+                                            ? "college"
+                                            : formLoaderType == "dip"
+                                                ? myElement[index]["dSub"]
+                                                : formLoaderType == "bs"
+                                                    ? myElement[index]["baSub"]
+                                                    : formLoaderType == "ms"
+                                                        ? myElement[index]
+                                                            ["maSub"]
+                                                        : myElement[index]
+                                                            ["phdSub"],
+                                    batch: formLoaderType == "scl"
+                                        ? myElement[index]["sBatch"]
+                                        : formLoaderType == "clg"
+                                            ? myElement[index]["cBatch"]
+                                            : formLoaderType == "dip"
+                                                ? myElement[index]["dBatch"]
+                                                : formLoaderType == "bs"
+                                                    ? myElement[index]
+                                                        ["baBatch"]
+                                                    : formLoaderType == "ms"
+                                                        ? myElement[index]
+                                                            ["msBatch"]
+                                                        : myElement[index]
+                                                            ["passYear"],
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
                         decoration: const BoxDecoration(

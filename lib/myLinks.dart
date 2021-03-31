@@ -544,7 +544,7 @@ class _MyLinkPageState extends State<MyLinkPage> {
                                 child: ClipPath(
                                   child: Container(
                                     height: 70,
-                                    width: screenWeight / 2.1,
+                                    width: screenWeight / 2,
                                     child: ListTile(
                                       title:
                                           Text(myElement[index]["buttonTitle"]),

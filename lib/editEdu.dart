@@ -5,30 +5,35 @@ import 'package:glitchApp/viewEdu.dart';
 import 'package:http/http.dart' as http;
 import 'main.dart';
 
-class AddEduPort extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: AddEdu());
-  }
-}
+class EditEdu extends StatefulWidget {
+  int id;
+  var type;
+  var auth;
+  var program;
+  var batch;
 
-class AddEdu extends StatefulWidget {
-  var userName;
-  var token;
-
-  AddEdu({this.token, this.userName});
+  EditEdu({Key key, this.id, this.type, this.auth, this.program, this.batch})
+      : super(key: key);
 
   @override
-  _AddEduState createState() => _AddEduState();
+  _EditEduState createState() => _EditEduState(id, type, auth, program, batch);
 }
 
-class _AddEduState extends State<AddEdu> {
+class _EditEduState extends State<EditEdu> {
   var userName = LoginPage.user;
   var token = LoginPage.token;
   var passwd = LoginPage.passwd;
   var baseURL = LoginPage.baseURL;
 
   var batchDate;
+
+  int id;
+  var stage;
+  var inst;
+  var pdegProgram;
+  var batchYear;
+  _EditEduState(
+      this.id, this.stage, this.inst, this.pdegProgram, this.batchYear);
 
   Map<String, String> get headers => {
         "Access-Token": token,
@@ -41,18 +46,21 @@ class _AddEduState extends State<AddEdu> {
   TextEditingController batch = new TextEditingController();
   DateTime _dateTime;
 
-  Future<String> addWork(var type) async {
-    var responser = await http.post(
+  Future<String> updateEdu(
+      int id, var type, var institute, var degree, var batch) async {
+    var responser = await http.put(
         "" +
             baseURL +
-            "update-profile-edu?type=" +
+            "update-profile-edu?id=" +
+            id.toString() +
+            "&type=" +
             type +
             "&institute=" +
-            institute.text +
+            institute +
             "&degree=" +
-            degree.text +
+            degree +
             "&batch=" +
-            batch.text +
+            batch +
             "",
         headers: headers);
 
@@ -119,7 +127,7 @@ class _AddEduState extends State<AddEdu> {
           content: new Stack(
             children: <Widget>[
               Container(
-                child: Text("Not added.Please,try again. [Status Code: 305]"),
+                child: Text("Not updated.Please,try again. [Status Code: 305]"),
               )
             ],
           ),
@@ -197,13 +205,17 @@ class _AddEduState extends State<AddEdu> {
 
   @override
   Widget build(BuildContext context) {
+    institute.text = inst;
+    degree.text = pdegProgram;
+    //batch.text = batchYear;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0xFF0D47A1),
           title: Text(
-            "Add new degree",
+            "Update degree",
             style: TextStyle(fontFamily: 'Raleway', color: Colors.white),
           ),
           leading: IconButton(
@@ -249,11 +261,12 @@ class _AddEduState extends State<AddEdu> {
                     padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                     child: ListTile(
                       title: Text(
-                        "Select your education stage.",
+                        stage,
                         style: TextStyle(color: Colors.black54),
                       ),
-                      subtitle: MyStatefulWidget(),
-                      leading: CircleAvatar(child: Icon(Icons.arrow_downward)),
+                      subtitle: Text("Educational Stage"),
+                      leading: CircleAvatar(
+                          child: Icon(Icons.arrow_right_alt_sharp)),
                     ),
                   ),
                   Padding(
@@ -327,7 +340,7 @@ class _AddEduState extends State<AddEdu> {
                           ),
                           backgroundColor: Colors.transparent,
                         ),
-                        labelText: "Batch",
+                        labelText: "Batch:" + batchYear,
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.black38),
                         ),
@@ -340,32 +353,7 @@ class _AddEduState extends State<AddEdu> {
                     child: RaisedButton.icon(
                       //Update Password
                       onPressed: () {
-                        //this.addRef();
-                        if (_MyStatefulWidgetState.newData == "None") {
-                          showDialog(
-                            builder: (context) => new AlertDialog(
-                              title: new Text("Reminder!"),
-                              content: new Stack(
-                                children: <Widget>[
-                                  Container(
-                                    child: Text(
-                                        "Please, select your educational stage"),
-                                  )
-                                ],
-                              ),
-                              actions: <Widget>[
-                                RaisedButton(
-                                  onPressed: () {
-                                    Navigator.of(context, rootNavigator: true)
-                                        .pop('dialog');
-                                  },
-                                  child: Text("ok"),
-                                ),
-                              ],
-                            ),
-                            context: context,
-                          );
-                        } else if (institute.text.length <= 0 ||
+                        if (institute.text.length <= 0 ||
                             degree.text.length <= 0 ||
                             batch.text.length <= 0) {
                           showDialog(
@@ -392,35 +380,23 @@ class _AddEduState extends State<AddEdu> {
                             context: context,
                           );
                         } else {
-                          var type = _MyStatefulWidgetState.newData == "School"
-                              ? "scl"
-                              : _MyStatefulWidgetState.newData == "College"
-                                  ? "clg"
-                                  : _MyStatefulWidgetState.newData ==
-                                          "Bachelor Degree"
-                                      ? "bs"
-                                      : _MyStatefulWidgetState.newData ==
-                                              "Master Degree"
-                                          ? "ms"
-                                          : _MyStatefulWidgetState.newData ==
-                                                  "Diploma"
-                                              ? "dip"
-                                              : "phd";
+                          var type = stage;
                           var auth = institute.text;
                           var session = batch.text;
                           var prog = degree.text;
 
                           print(type + auth + prog + session);
-                          addWork(type);
+
+                          updateEdu(id, type, auth, prog, session);
                         }
                       },
                       icon: FaIcon(
-                        FontAwesomeIcons.plusCircle,
+                        FontAwesomeIcons.edit,
                         //color: Colors.white70,
                         size: 20,
                       ),
                       label: Text(
-                        "Add Degree",
+                        "Update",
                         //style: TextStyle(fontSize: 15),
                       ),
                       color: Colors.green,
@@ -432,55 +408,6 @@ class _AddEduState extends State<AddEdu> {
           )),
         ),
       ),
-    );
-  }
-}
-
-class MyStatefulWidget extends StatefulWidget {
-  MyStatefulWidget({Key key}) : super(key: key);
-
-  @override
-  _MyStatefulWidgetState createState() => _MyStatefulWidgetState();
-}
-
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  String dropdownValue = 'None';
-  static String newData = "Null";
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
-      icon: Icon(Icons.arrow_downward),
-      iconSize: 24,
-      elevation: 16,
-      style: TextStyle(color: Colors.deepPurple),
-      underline: Container(
-        height: 2,
-        color: Colors.deepPurpleAccent,
-      ),
-      onChanged: (String newValue) {
-        setState(() {
-          dropdownValue = newValue;
-          newData = newValue;
-          print(newValue + "  1");
-          print(dropdownValue);
-          print(newValue + "  2");
-        });
-      },
-      items: <String>[
-        'None',
-        'School',
-        'College',
-        'Diploma',
-        'Bachelor Degree',
-        'Master Degree',
-        'Doctorate Degree'
-      ].map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
     );
   }
 }

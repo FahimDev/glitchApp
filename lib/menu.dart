@@ -337,7 +337,7 @@ class MyMenu extends StatelessWidget {
                                     ),
                                     Container(
                                       child: Text(
-                                        "Employment",
+                                        "Work",
                                         style: TextStyle(
                                             fontFamily: 'Aleo',
                                             fontStyle: FontStyle.normal,
